@@ -1,0 +1,35 @@
+; definition for locations for reed production
+; called in inside and blade
+
+o<machine> sub
+
+;
+; definitions for tool length touch plate
+;
+   #<_x-touch>  =  85
+   #<_y-touch>  =  145                        ; point on touch plate
+   #<_z-touch>  = -67                         ; no tool injected 
+;
+; definitions for inside
+;
+   #<_ix-origin>  =  36.000                  ; middle of reed carrier
+   #<_iy-origin>  =  -3.500                  ; start of reed
+   #<_iz-origin>  = -37.100                  ; top of reed carrier
+   #<_iz-probe>   = -35.363                  ; probe touch value
+;
+; definitions for blade
+;
+   #<_bx-origin>  =  136.000                 ; middle of reed carrier
+   #<_by-origin>  =   6.500                  ; start of reed
+   #<_bz-origin>  = -31.800                  ; top of reed carrier
+   #<_bz-probe>   = -35.363                  ; probe touch value
+;
+;common definitions
+;
+   #<_b-radius>      = 13                    ; radius of blade roll
+   #<_i-sink-z>      = .60                   ; reed sinks in carrier
+   #<_i-delta-z>     = 0                     ; difference depth front back
+
+o<machine> endsub
+
+   M2    ; programm end

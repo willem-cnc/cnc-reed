@@ -1,0 +1,54 @@
+; setting the blade screws
+; for positioning the reed
+
+   o<machine> call                     ; get x,y & z origin definitions
+   o<reed> call                        ; get reed parameters
+
+   #<z-margin>       = 0               ; extra margin for smoothing/testing
+
+   #<_safe-z>        = 30
+
+   G17      ; xy plane
+   G54      ; coord system 1
+   G40      ; compensation off
+   G49      ; tool length comp off
+   G80      ; canning cycle off
+   G90      ; absolute mode
+   G21      ; metric
+   G61      ; exact mode
+
+   G53 G0 Z0               ; safe hight
+   ;
+   ; coordinate system 1 in use.
+   ;
+   G10 L2 P1 X#<_bx-origin> Y#<_by-origin> Z0 ; z=0 for tool touch
+
+   #<_req-tool> = 100      ; probe
+   M5                      ; stop spindle
+   o<change_tool> call     ; change tool and messure
+   G10 L2 P1 Z[#5063 - #<_bz-probe> + #<_bz-origin> + #<z-margin>] ; z for new tool
+
+   G0 X-[#241+[#5410/2]] Y#240 ; x/y values from reed
+   G0 Z-.3
+   (MSG, place reed against probe and front screw against reed)
+   (MSG, hit resume or s button to continue)
+   M0                         ; wait on resume button
+
+   G0 Z#<_safe-z>
+   G0 X-[#241+[#5410/2]] Y[#<_reed-length>-#240] ; x/y values from reed
+   G0 Z-.3
+   (MSG, place reed against probe and back screw against reed)
+   (MSG, hit resume or s button to continue)
+   M0                         ; wait on resume button
+
+   M5                      ; stop spindle
+
+   G53 G0 Z0
+   G53 G0 X0 Y0
+
+   G54      ; coord system 1
+   G90      ; absolute  distance
+   G80      ; canning cycle off
+   G40      ; compensation off
+   G64      ; cancel exact mode
+   M2       ; end of programm

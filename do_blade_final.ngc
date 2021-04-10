@@ -1,0 +1,139 @@
+; do_blade_final
+; program for production of bassoon reed blades
+
+; model definitions from calling programm
+; #<_first-m>        ; start of model table
+
+; profile definitions from calling programm
+; #<_first-p>        ; start of profile table
+; #<_last-p>         ; last entry of profile table
+; #<_m-y>            ; element measure point from bottom
+; #<_m-x>            ; element half model width
+; #<_p-z>            ; element raw z (first pass)
+; #<_p-ra>           ; element rails value
+; #<_p-ch>           ; element channel value
+; #<_p-ce>           ; element center value
+; #<_p-cal>          ; element number of calculated points
+; #<_p-steps>        ; element number of profile steps
+; #<_m-s>            ; element size
+
+o<do_blade_final> sub
+
+; parameters for calculated points between 
+; rail - channel
+; center - channel
+
+   #<cp-x>  = 0            ; element x value
+   #<cp-z>  = 1            ; element z value
+   #<cp-s>  = 2            ; element size
+
+   F350
+   G0 Z#<_safe-z>
+   G0 X#[#<_first-p> + #<_m-x>] Y#[#<_first-p> + #<_m-y>] ; initial move
+
+   #<p-element> = #<_first-p>
+   o200 while [#<p-element> LT #<_last-p>]
+      #<p-step> = 0
+      ;
+      ; profile delta's and calculation points for this area
+      ;
+      #<profile-steps> = [#[#<p-element> + #<_p-steps>]]
+      #<m-delta-x>  = [[#[#<p-element>+#<_m-s>+#<_m-x>]-#[#<p-element>+#<_m-x>]] / [#<profile-steps>+1]]
+      #<m-delta-y>  = [[#[#<p-element>+#<_m-s>+#<_m-y>]-#[#<p-element>+#<_m-y>]] / [#<profile-steps>+1]]
+      #<p-delta-ra> = [[#[#<p-element>+#<_m-s>+#<_p-ra>]-#[#<p-element>+#<_p-ra>]] / [#<profile-steps>+1]]
+      #<p-delta-ch> = [[#[#<p-element>+#<_m-s>+#<_p-ch>]-#[#<p-element>+#<_p-ch>]] / [#<profile-steps>+1]]
+      #<p-delta-ce> = [[#[#<p-element>+#<_m-s>+#<_p-ce>]-#[#<p-element>+#<_p-ce>]] / [#<profile-steps>+1]]
+      #<p-cal>      = [#[#<p-element> + #<_p-cal>]]
+      o300 while [#<p-step> LE #[#<p-element> +#<_p-steps>]]
+         ;
+         ; values for this profile step
+         ; x,y, rail, channel, center and calculated points
+         ;
+         #<cur-x> = [#[#<p-element>+#<_m-x>] + [#<m-delta-x> * #<p-step>]]
+         #<cur-y> = [#[#<p-element>+#<_m-y>] + [#<m-delta-y> * #<p-step>]]
+         #<ra-thickness> = [#[#<p-element>+#<_p-ra>]+#<p-delta-ra>*#<p-step>]
+         #<ch-thickness> = [#[#<p-element>+#<_p-ch>]+#<p-delta-ch>*#<p-step>]
+         #<ce-thickness> = [#[#<p-element>+#<_p-ce>]+#<p-delta-ce>*#<p-step>]
+         #<cx-step> = [-#<cur-x> / [[#<p-cal> + 1]*2]]
+         ;
+         ; x deviation is calculated (valid for: model-x < i-radius)
+         ; sin angle = point-x/i-radius = new-x/(i-radius + point-thickness)
+         ; new-x = point-x/i-radius * (i-radius + point-thickness)
+         ; z deviation is calculated with pythagoras
+         ; new-z = sqrt((i-radius+point-thickness)**2 - new-x**2) - i-radius
+         ;
+         ; calculate rail-channel points rail included
+         ;
+         #<cz-step> = [[#<ch-thickness> - #<ra-thickness>] / [#<p-cal> + 1]]
+         #<point-table> = #<_point-store>
+         #<point-x> = #<cur-x>
+         #<point-thickness> = #<ra-thickness>
+         #<point-num> = 0
+         o500 while [#<point-num> LE #<p-cal>]
+            #<new-x> = [#<point-x> * [1 + [#<point-thickness>/#<_i-radius>]]]
+            #<new-z> = [-#<_i-radius>+sqrt[[#<_i-radius>+#<point-thickness>]**2-#<new-x>**2]]
+            #[#<point-table> + #<cp-x>] = #<new-x>
+            #[#<point-table> + #<cp-z>] = #<new-z>
+            #<point-table> = [#<point-table> + #<cp-s> ]
+            #<point-x> = [#<point-x> + #<cx-step>]
+            #<point-thickness> = [#<point-thickness> + #<cz-step>]
+            #<point-num> = [#<point-num> + 1]
+         o500 endwhile
+         ;
+         ; calculate channel-center points channel included
+         ;
+         #<cz-step> = [[#<ce-thickness> - #<ch-thickness>] / [#<p-cal> + 1]]
+         #<point-thickness> = #<ch-thickness>
+         #<point-num> = 0
+         o600 while [#<point-num> LE #<p-cal>]
+            #<new-x> = [#<point-x> * [1 + [#<point-thickness>/#<_i-radius>]]]
+            #<new-z> = [-#<_i-radius>+sqrt[[#<_i-radius>+#<point-thickness>]**2-#<new-x>**2]]
+            #[#<point-table> + #<cp-x>] = #<new-x>
+            #[#<point-table> + #<cp-z>] = #<new-z>
+            #<point-table> = [#<point-table> + #<cp-s> ]
+            #<point-x> = [#<point-x> + #<cx-step>]
+            #<point-thickness> = [#<point-thickness> + #<cz-step>]
+            #<point-num> = [#<point-num> + 1]
+         o600 endwhile
+
+         o310 if [#5420 GE 0]                ; current x pos
+            ;
+            ; right to left
+            ;
+            #<point> = #<_point-store>
+            o400 while [#<point> LT #<point-table>]
+               G1 X#[#<point> + #<cp-x>] Y#<cur-y> Z#[#<point> + #<cp-z>]
+               #<point> = [#<point> + #<cp-s>]
+            o400 endwhile
+            G1 X0 Z#<ce-thickness>
+            #<point> = [#<point-table> - #<cp-s>]
+            o410 while [#<point> GE #<_point-store>]
+               G1 X-#[#<point> + #<cp-x>] Y#<cur-y> Z#[#<point> + #<cp-z>]
+               #<point> = [#<point> - #<cp-s>]
+            o410 endwhile
+         o310 else
+            ;
+            ; left to right
+            ;
+            #<point> = #<_point-store>
+            o420 while [#<point> LT #<point-table>]
+               G1 X-#[#<point> + #<cp-x>] Y#<cur-y> Z#[#<point> + #<cp-z>]
+               #<point> = [#<point> + #<cp-s>]
+            o420 endwhile
+            G1 X0 Z#<ce-thickness>
+            #<point> = [#<point-table> - #<cp-s>]
+            o430 while [#<point> GE #<_point-store>]
+               G1 X#[#<point> + #<cp-x>] Y#<cur-y> Z#[#<point> + #<cp-z>]
+               #<point> = [#<point> - #<cp-s>]
+            o430 endwhile
+         o310 endif
+         #<p-step> = [#<p-step> + 1]         ; next profile line
+      o300 endwhile
+      #<p-element> = [#<p-element> + #<_m-s>]   ; next profile element
+   o200 endwhile
+
+   G0 Z#<_safe-z>
+
+o<do_blade> endsub
+
+M2    ; programm end

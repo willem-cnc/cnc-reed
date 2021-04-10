@@ -1,0 +1,30 @@
+; do_gouge
+; program for gouging a bassoon reed
+; creating inside (right hand circuit)
+; outside to middle of the reed
+
+o<do_gouge> sub
+
+   #<feed-rate> = 750
+   #<i-center-z> = [#<_i-radius> + #<_i-thickness> - #<_i-sink-z>]
+   F#<feed-rate>
+   #<delta-x> = [#<_i-width>/2]
+   G0 X0 Y[#5410/2]
+
+   #<step-size> = [#<delta-x> / #<_gouge-steps>]
+
+   o100 while [#<delta-x> GE 0.01]     ; skip middle
+      #<current-z> = [#<i-center-z> - sqrt[#<_i-radius>**2 - #<delta-x>**2]]
+      ; make line on left hand side
+      G1 X-#<delta-x>
+      G1 Z#<current-z>
+      G1 Y[#<_reed-length> - [#5410/2]] Z[#<current-z> + #<_i-delta-z>]
+      ; make line on right hand side
+      G1 X#<delta-x>
+      G1 Y[#5410/2] Z #<current-z>
+      #<delta-x> = [#<delta-x> - #<step-size>]
+   o100 endwhile
+
+o<do_gouge> endsub
+
+M2       ; programm end

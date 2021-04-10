@@ -1,0 +1,16 @@
+o<change_tool> sub
+   G49                        ; tool length off
+   G53 G0 Z0                  ; safe height
+   G53 G0 X#<_x-touch> Y#<_y-touch>
+   T#<_req-tool> M6           ; load tool fixed position
+   (MSG, connect clip on tool and hit resume or s button)
+   M0                         ; wait on resume button
+   G91                        ; relative mode
+   G38.4 Z[#<_z-touch> + 11] F100 ; down max
+   G90                        ; absolute mode
+   G53 G0 Z0                  ; safe height
+   (MSG, remove clip from tool and hit resume or s button)
+   M0                         ; wait on resume button
+o<change_tool> endsub
+
+M2

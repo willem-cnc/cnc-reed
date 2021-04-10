@@ -1,0 +1,80 @@
+; definition of reed dimensions
+
+o<reed> sub
+
+   (DEBUG, stees versie: x)
+
+   #<_reed-length>   = 120
+   #<_scratch-size>  = 10              ; space at each side of the reed
+   #<_i-width>       = 15.6            ; width of reed (quarter round)
+   #<_i-radius>      = #<_b-radius>    ; inside radius = blade roll
+   #<_i-thickness>   = 1.35            ; middle of the reed
+   #<_gouge-steps>   = 20              ; number of steps
+   #<_b-start-angle> = 34              ; degrees for raw
+   #<_b-angle-step>  = 2               ; degree for raw
+
+   #<_gouge-flag>    = 1
+   #<_model-flag>    = 1
+   #<_raw-flag>      = 1
+   #<_final-flag>    = 1
+
+; reed definition table
+; model and profile are combined
+; y ascending values all values in mm
+; model: Chiarugi Miller #1A
+; profile: from barrick stees
+;
+   #<_first-m> = 100                ; start of model table
+   #<_last-m>  = 400                ; last entry of model table
+   #<_first-p> = 240                ; start of profile table
+   #<_last-p>  = 400                ; last entry profile table
+   #<_m-y>     = 0                  ; element measure point from bottom
+   #<_m-x>     = 1                  ; element half model width
+   #<_p-z>     = 2                  ; element raw z (first pass)
+   #<_p-ra>    = 3                  ; element rails thickness value
+   #<_p-ch>    = 4                  ; element channel thickness value
+   #<_p-ce>    = 5                  ; element center thickness value
+   #<_p-cal>   = 6                  ; element number of calculated points
+   #<_p-steps> = 7                  ; element number of profile steps
+   #<_m-s>     = 10                 ; element size
+
+#100 = 00 #101 = 4.77
+#110 = 02 #111 = 4.73
+#120 = 04 #121 = 4.68
+#130 = 06 #131 = 4.63
+#140 = 08 #141 = 4.58
+#150 = 10 #151 = 4.54
+#160 = 12 #161 = 4.49
+#170 = 14 #171 = 4.47
+#180 = 16 #181 = 4.44
+#190 = 18 #191 = 4.41
+#200 = 20 #201 = 4.39
+#210 = 22 #211 = 4.41
+#220 = 24 #221 = 4.44
+#230 = 26 #231 = 4.51
+#240 = 28 #241 = 4.57 #242 = .98 #243 = .91 #244 = .91 #245 = .87 #246 = 5 #247 = 6
+#250 = 30 #251 = 4.72 #252 = .93 #253 = .85 #254 = .87 #255 = .84 #256 = 5 #257 = 6
+#260 = 32 #261 = 4.91 #262 = .89 #263 = .79 #264 = .83 #265 = .80 #266 = 5 #267 = 6
+#270 = 34 #271 = 5.10 #272 = .85 #273 = .73 #274 = .78 #275 = .77 #276 = 5 #277 = 6
+#280 = 36 #281 = 5.29 #282 = .81 #283 = .69 #284 = .74 #285 = .73 #286 = 5 #287 = 6
+#290 = 38 #291 = 5.50 #292 = .77 #293 = .64 #294 = .69 #295 = .67 #296 = 5 #297 = 6
+#300 = 40 #301 = 5.71 #302 = .73 #303 = .59 #304 = .67 #305 = .66 #306 = 5 #307 = 6
+#310 = 42 #311 = 5.95 #312 = .70 #313 = .55 #314 = .65 #315 = .66 #316 = 5 #317 = 6
+#320 = 44 #321 = 6.19 #322 = .67 #323 = .52 #324 = .62 #325 = .65 #326 = 5 #327 = 6
+#330 = 46 #331 = 6.43 #332 = .62 #333 = .47 #334 = .56 #335 = .58 #336 = 5 #337 = 6
+#340 = 48 #341 = 6.67 #342 = .58 #343 = .42 #344 = .50 #345 = .50 #346 = 5 #347 = 6
+#350 = 50 #351 = 6.91 #352 = .54 #353 = .40 #354 = .41 #355 = .42 #356 = 5 #357 = 6
+#360 = 52 #361 = 7.15 #362 = .47 #363 = .40 #364 = .40 #365 = .40 #366 = 5 #367 = 6
+#370 = 54 #371 = 7.39 #372 = .40 #373 = .40 #374 = .40 #375 = .40 #376 = 5 #377 = 6
+#380 = 56 #381 = 7.60 #382 = .40 #383 = .40 #384 = .40 #385 = .40 #386 = 5 #387 = 6
+#390 = 58 #391 = 7.70 #392 = .40 #393 = .40 #394 = .40 #395 = .40 #396 = 5 #397 = 6
+#400 = 60 #401 = 7.70 #402 = .40 #403 = .40 #404 = .40 #405 = .40 #406 = 5 #407 = 6
+
+;
+; table to store calculated points
+;
+   #<_point-store>      = 500
+
+o<reed> endsub
+
+   M2    ; programm end

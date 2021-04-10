@@ -1,0 +1,82 @@
+As a non-professional bassoon player in a wind orchestra I made
+my reeds by hand for about 30 years. I used gouges, stanley knives, 
+sandpaper and a lot of patience.
+
+The problem is that the results are different every time so I looked
+for a (low cost) repeatable process. End 2017 I found on youtube a
+movie of hipperbassoon which shows the construction of a reedblade with
+a dremel cutter by copying a model.
+
+The idea was to do the same with a cnc-machine without a model. At that
+time I did not have a cnc-machine or knowledge how to programm it.
+I'm a retired programmer and all my home systems are build by myself
+with debian linux, so linuxcnc and g-code fits in this picture.
+
+The final process:
+1. split the reed pipe in 4 pieces
+2. cut it to desired length
+3. cnc-milling for gouging
+4. cnc-milling for modelling
+5. cnc-milling for profiling
+6. rest is standard
+
+My hardware consists off:
+- pipe splitter
+   not yet available
+- computer
+   - Intel D945GCLF2 with ATOM 330 1.6 GHz (1 core disabled)
+   - RAM 2 GB
+   - SSD Crucial 120GB
+- milling machine
+   - designed with freecad and build with aluminium (based on grabcad model)
+- gouching carrier
+   - 20x20 aluminium profile
+- profiling carrier
+   - 20x20 aluminium profile
+   - aluminium pipe D=26
+- touch plate
+   - iron key plate
+
+The software consists off:
+- linuxcnc
+   RTAI kernel (amd64)
+- machine.ngc
+   properties of the machine
+   locations and dimensions
+      - of gouging carrier
+      - of profiling carrier
+      - of tool probe
+- reed.ngc or link to a named-reed file
+   parameters of a reed
+   gouging, modelling and profiling
+- inside.ngc
+   setup for gouging and modelling
+   start do_inside and/or do_model
+- do_gouge.ngc
+   gouging using reed parameters
+- do_model.ngc
+   modelling useing reed parameters
+- blade_screws.ngc
+   screw setting for reed positioning
+- blade.ngc
+   setup for profiling
+   start do_blade_raw and/or do_blade_final
+- do_blade_raw.ngc
+   first step profiling in length of blade
+- do_blade_final.ngc
+   second step profiling transverse of blade
+- change_tool.ngc
+   request tool mount and measure tool length
+
+There are video's of each step on vimeo.com.
+- splitting
+  https://vimeo.com/....
+- gouging
+  https://vimeo.com/....
+- modelling
+  https://vimeo.com/....
+- profiling (raw)
+  https://vimeo.com/....
+- profiling (final)
+  https://vimeo.com/....
+
