@@ -1,0 +1,16 @@
+Gouging uses variables
+
+reed parameters
+_i-radius            radius for the inside
+_i-thickness         thickness in the center
+_i-sink-z            distance reed is below carrier surface
+_i-width             the width of the reed
+_i-delta-z           difference in z for low and high y (normally 0)
+_gouge-steps         number of gouging actions
+
+The program (called by inside) does
+- calculate x step size
+- loops with different x
+   - calculate z
+   - makes line with low x
+   - makes line with high x

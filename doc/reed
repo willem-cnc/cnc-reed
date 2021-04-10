@@ -1,0 +1,51 @@
+Named reed files are possible. Before starting inside or blade a link
+has to be made. 
+The link name: reed.ngc
+The reference: the named file
+
+There are 3 reed files named after the source 
+davidsson.ngc
+ewell.ngc
+stees.ngc
+
+A reed file is contructed as a subroutine after calling the routine the
+variables are global defined #<_name> = value.
+
+The variables
+_reed-length      length of the reed
+_scratch-size     space for clamps (extra reed length at both sides)
+_i-width          width of quarter round reed
+_i-radius         gouging radius = radius profile carrier
+_i-thickness      thickness middle of the reed
+_gouge-steps      number of rounds for gouging
+_b-start-angle    profiling (raw) start angle
+_b-ange-step      profiling (raw) angle step
+
+_gouge-flag       call gouging (0 = no, 1= yes)
+_model-flag       call modelling (0 = no, 1= yes)
+_raw-flag         call profiling-raw (0 = no, 1= yes)
+_final-flag       call profiling-final (0 = no, 1= yes)
+
+The model and profile tables are combined and consists of elements
+
+_first-m          first element of model table
+_last-m           last element of model table
+_first-p          first element of profile table
+_last-p           last element of profile table
+_m-s              10 element size 
+
+Indexes in an element
+_m-y              0  element distance from bottom of reed
+_m-x              1  half with of the model
+_p-z              2  thickness for raw
+_p-ra             3  rail thickness
+_p-ch             4  channel thickness
+_p-ce             5  center thickness
+_p-cal            6  number of calculation points rail-channel and
+                     channel-center
+_p-steps          7  number of final profile steps per element
+
+_point-store      location for storing calculation points
+                  2 x max _p-cal is used
+ 
+

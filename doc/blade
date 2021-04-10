@@ -1,0 +1,15 @@
+Blade has variables
+
+z-margin       for testing normally 0
+_safe-z        free of workpiece
+
+
+The programm
+- reads machine and reed parameters
+- setup x,y for blade carrier
+   select tool 1 for profiling
+   two passes
+      - if raw flag is set
+         - calls raw profiling
+      - if final flag is set
+         - calls final profiling

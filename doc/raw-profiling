@@ -1,0 +1,17 @@
+Raw profiling uses variables
+
+reed parameters
+_b-start-angle    profiling (raw) start angle
+_b-ange-step      profiling (raw) angle step
+_first-p          first element of profile table
+_last-p           last element of profile table
+_m-y              0  element distance from bottom of reed
+_p-z              2  thickness for raw
+_m-s              10 element size 
+
+The pogram (called by blade) does
+   for lines (defined by start-angle & angle step)
+      - left line first-element to last-element
+      - right line last-element to first-element
+   
+      
