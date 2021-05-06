@@ -2,7 +2,7 @@ Raw profiling uses variables
 
 reed parameters
 _b-start-angle    profiling (raw) start angle
-_b-ange-step      profiling (raw) angle step
+_b-angle-step     profiling (raw) angle step
 _first-p          first element of profile table
 _last-p           last element of profile table
 _m-y              0  element distance from bottom of reed

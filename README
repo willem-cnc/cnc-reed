@@ -55,7 +55,7 @@ The software consists off:
 - do_gouge.ngc
    gouging using reed parameters
 - do_model.ngc
-   modelling useing reed parameters
+   modelling using reed parameters
 - blade_screws.ngc
    screw setting for reed positioning
 - blade.ngc
@@ -68,15 +68,17 @@ The software consists off:
 - change_tool.ngc
    request tool mount and measure tool length
 
-There are video's of each step on vimeo.com.
+There are video's of the tools and each step on vimeo.com
+- tools
+  https://vimeo.com/539634631
 - splitting
   https://vimeo.com/....
 - gouging
-  https://vimeo.com/....
+  https://vimeo.com/543153372
 - modelling
-  https://vimeo.com/....
+  https://vimeo.com/543191996
 - profiling (raw)
-  https://vimeo.com/....
+  https://vimeo.com/543208011
 - profiling (final)
-  https://vimeo.com/....
+  https://vimeo.com/543265566
 
