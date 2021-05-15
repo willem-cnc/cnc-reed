@@ -31,7 +31,6 @@
 
    #<pass-count> = 0
    o100 while [#<pass-count> LE 1.5]
-      M0                      ; wait on resume button
       S1000 M3                ; start spindle clock wise
       G4 P3                   ; wait 3 seconds for spindlespeed
       o110 if [#<_raw-flag> GE 0.5]
@@ -44,6 +43,7 @@
       G53 G0 Z0
       o130 if [#<pass-count> LE 0.5]
          (MSG, turn reed when ready hit resume or s button)
+         M0                   ; wait on resume button
       o130 endif
       #<pass-count> = [#<pass-count> + 1]
    o100 endwhile
