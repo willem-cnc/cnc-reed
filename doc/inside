@@ -7,6 +7,7 @@ _scratch-size     room for clamping the reed to the carrier
 The programm does
 - reads machine and reed parameters 
 - setup x,y for inside carrier
+   determine gouging  modelling sequence
    if gouging flag is set
       - select tool 3 for gouging
       - meassure tool offset

@@ -13,6 +13,7 @@ o<reed> sub
    #<_b-start-angle> = 34              ; degrees for raw
    #<_b-angle-step>  = 2               ; degree for raw
 
+   #<_gouge-first-flag> = 0
    #<_gouge-flag>    = 1
    #<_model-flag>    = 1
    #<_raw-flag>      = 1

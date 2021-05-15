@@ -21,6 +21,7 @@ _gouge-steps      number of rounds for gouging
 _b-start-angle    profiling (raw) start angle
 _b-ange-step      profiling (raw) angle step
 
+_gouge-first-flag gouging before modelling ( 0 = no, 1= yes)
 _gouge-flag       call gouging (0 = no, 1= yes)
 _model-flag       call modelling (0 = no, 1= yes)
 _raw-flag         call profiling-raw (0 = no, 1= yes)
