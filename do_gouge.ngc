@@ -6,7 +6,7 @@
 o<do_gouge> sub
 
    #<feed-rate> = 750
-   #<i-center-z> = [#<_i-radius> + #<_i-thickness> - #<_i-sink-z>]
+   #<i-center-z> = [#<_i-radius> + #<_i-thickness>]
    F#<feed-rate>
    #<delta-x> = [#<_i-width>/2]
    G0 X0 Y[#5410/2]

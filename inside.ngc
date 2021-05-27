@@ -52,7 +52,7 @@
          G10 L2 P1 Z0            ; z=0 for tool touch
          #<_req-tool> = 3        ; ball nose r = 1 mm
          o<change_tool> call     ; change tool and messure
-         G10 L2 P1 Z[#5063 - #<_iz-probe> + #<_iz-origin> + #<gouge-margin>] ; z for new tool
+         G10 L2 P1 Z[#5063 - #<_iz-probe> + #<_iz-origin> + #<gouge-margin> - #<_i-sink-z>] ; z for new tool
 
          S1000 M3                ; start spindle clock wise
          G4 P3                   ; wait 3 seconds for spindlespeed
