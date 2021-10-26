@@ -1,26 +1,18 @@
-; definition of reed dimensions
+; definition of reed dimensions for single barrel profiling
 
 o<reed> sub
 
-   (DEBUG, davidsson versie: x)
+   (DEBUG, single barrel versie: x)
 
    #<_reed-length>   = 120
    #<_scratch-size>  = 10              ; space at each side of the reed
-   #<_i-width>       = 15.6            ; width of reed (quarter round)
    #<_i-radius>      = #<_b-radius>    ; inside radius = blade roll
    #<_i-thickness>   = 1.35            ; middle of the reed
-   #<_gouge-steps>   = 20              ; number of steps
-   #<_b-start-angle> = 34              ; degrees for raw
-   #<_b-angle-step>  = 2               ; degree for raw
-
-   #<_gouge-first-flag> = 0
-   #<_gouge-flag>    = 1
-   #<_model-flag>    = 1
-   #<_raw-flag>      = 1
-   #<_final-flag>    = 0
+   #<_gouge-steps>   = 25              ; number of steps
+   #<_b-start-angle> = 34              ; degrees for single barrel profiling
+   #<_b-angle-step>  = 2               ; degree for single barrel profiling
 
 ; reed definition table
-; model and profile are combined
 ; y ascending values all values in mm
 ; model: Chiarugi Miller #1A
 ; profile: Davidsson (see http://www.canit.se/~chrisdav/reedadj.html)
@@ -31,13 +23,12 @@ o<reed> sub
    #<_last-p>  = 400                ; last entry profile table
    #<_m-y>     = 0                  ; element measure point from bottom
    #<_m-x>     = 1                  ; element half model width
-   #<_p-z>     = 2                  ; element raw z (first pass)
-   #<_p-ra>    = 3                  ; element rails thickness value
-   #<_p-ch>    = 4                  ; element channel thickness value
-   #<_p-ce>    = 5                  ; element center thickness value
-   #<_p-cal>   = 6                  ; element number of calculated points
-   #<_p-steps> = 7                  ; element number of profile steps
+   #<_p-z>     = 2                  ; element z (single barrel)
    #<_m-s>     = 10                 ; element size
+
+; when modelling is not done with modelling.ngc (p.e. by hand)
+; remove variables #100 - #231
+; #<_first-m> and #<_last-m> equal to #<_first-p> and #<_last-p>
 
 #100 = 00 #101 = 4.77
 #110 = 02 #111 = 4.73
@@ -70,11 +61,6 @@ o<reed> sub
 #380 = 56 #381 = 7.60 #382 = .55
 #390 = 58 #391 = 7.70 #392 = .40
 #400 = 60 #401 = 7.70 #402 = .40
-
-;
-; table to store calculated points
-;
-   #<_point-store>      = 500
 
 o<reed> endsub
 

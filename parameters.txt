@@ -1,0 +1,108 @@
+Parameters
+
+   All programs are using a part of these parameters.
+
+Machine parameters
+
+   All programs are using coordinate system 1. The file „machine.ngc”
+   defines the machine coordinates (mm with 3 decimals). The file is
+   constructed as subroutine and is called by the programs. After the
+   call these parameters are defined. 
+
+   #<_x-touch>       x coordinate on touch plate
+      used by: change-tool
+   #<_y-touch>       y coordinate on touch plate
+      used by: change-tool
+   #<_z-touch>       head without tool
+      used by: change-tool
+
+   #<_ix-origin>     center gouging/modeling
+      used by:  carrier-inside, gouging, modelling
+   #<_iy-origin>     start reed gouging/modelling
+      usedby:   carrier-inside, gouging, modelling
+   #<_iz-origin>     top carrier gouging/modelling
+      used by:  carrier-inside, gouging, modelling
+   #<_iz-probe>      tool z for iz-origin          
+      used by:  carrier-inside, gouging, modelling
+      
+   #<_px-origin>     center profileroll
+      used by:  profile-screws, profiling-sb, profiling-db
+   #<_py-origin>     start profileroll
+      used by:  profile-screws, profiling-sb, profiling-db
+   #<_pz-origin>     top profileroll
+      used by:  profile-screws, profiling-sb, profiling-db
+   #<_pz-probe>      tool z for pz-origin
+      used by:  profile-screws, profiling-sb, profiling-db
+
+   #<_pipe-radius>   outside radius reed pipe
+      used by:  carrier-inside
+   #<_b-radius>      radius profileroll
+      used by:  gouging, profiling-sb, profiling-db
+   #<_i-sink-z>      depth in gouging carrier
+      used by:  carrier-inside, gouging
+   #<_i-delta-z>     difference z front/back
+      used by:  carrier-inside, gouging
+
+
+Reed parameters
+
+   All programs are using reed parameters. The file "reed.ngc" defines
+   the reed parameters. The file is constructed as subroutine and is
+   called by the programs. After the call these parameters are defined.
+   You can make a link too a named file with ln -sf definitie.ngc 
+   reed.ngc. (ln -sf stees.ngc reed.ngc).
+
+   #<_reed-length>   length of the reed
+      used by:  carrier-inside, gouging
+   #<_scratch-size>  space for clamping reed
+      used by:  gouging, modelling
+   #<_i-radius>      gouging radius = radius profileroll
+      used by:  gouging, profiling-sb, profiling-db
+   #<_i-thickness>   thickness in the center for gouging
+      used by:  gouging
+   #<_gouge-steps>   number of steps for gouging
+      used by:  gouging
+   #<_b-start-angle> angle first profileline (frontview profileroll)
+      used by:  profiling-sb
+   #<_b-angle-step>  degrees next profileline 
+      used by:  profiling-sb
+   #<_point-store>   value for table with profile calculation points
+      used by:  profiling-db
+
+
+   The next table is a list of elements for a combination of model and profile elements. 
+
+   #<_first-m>       value of first model element
+      used by:  gouging, modelling
+   #<_last-m>        value of last model element
+      used by:  gouging, modelling
+   #<_first-p>       value of fist profile element (>= first-m)
+      used by:  profiling-sb, profiling-db
+   #<_last-p>        value of last profile element (<= last-m)
+      used by:  profiling-sb, profiling-db
+
+   Each element contains these parameters - () is element index
+   #<_m-y> (0)       y value of the element
+      used by:  modelling, profiling-sb, profiling-db
+   #<_m-x> (1)       half width of the model for this y
+      used by:  modelling, profiling-db
+   #<_p-z> (2)       thickness for this y
+      used by:  profing-sb
+   #<_p-ra> (3)      rail thickness for this y 
+      used by:  profiling-db
+   #<_p-ch> (4)      channel thickness for this y
+      used by:  profiling-db
+   #<_p-ce> (5)      center thickness for this y
+      used by:  profiling-db
+   #<_p-cal> (6)     number of calculationpoints center-channel
+                     and channel-rail
+      used by:  profiling-db
+   #<_p-steps> (7)   number of y increments too m-y of next element
+      used by:  profiling-db
+   #<_m-s> (10)      element size (rounded on 10 for readability)
+      used by:  gouging, modelling, profile-screws, profiling-sb,
+               profiling-db
+
+   center is the middle of the reed
+   channel is middle between center and rail
+   rail is the x value of the element

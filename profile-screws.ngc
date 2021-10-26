@@ -1,12 +1,9 @@
-; setting the blade screws
+; setting the profile screws
 ; for positioning the reed
-
+;
+   o<version> call                     ; display set version
    o<machine> call                     ; get x,y & z origin definitions
    o<reed> call                        ; get reed parameters
-
-   #<z-margin>       = 0               ; extra margin for smoothing/testing
-
-   #<_safe-z>        = 30
 
    G17      ; xy plane
    G54      ; coord system 1
@@ -19,14 +16,15 @@
 
    G53 G0 Z0               ; safe hight
    ;
-   ; coordinate system 1 in use.
+   ; parameters
    ;
-   G10 L2 P1 X#<_bx-origin> Y#<_by-origin> Z0 ; z=0 for tool touch
+   #<safe-z>        = 30
 
-   #<_req-tool> = 100      ; probe
    M5                      ; stop spindle
-   o<change_tool> call     ; change tool and messure
-   G10 L2 P1 Z[#5063 - #<_bz-probe> + #<_bz-origin> + #<z-margin>] ; z for new tool
+
+   #<_req-tool> = 100       ; ball nose r = .5 mm
+   o<change-tool> call     ; change tool and messure
+   G10 L2 P1 X#<_px-origin> Y#<_py-origin> Z[#<_value>-#<_pz-probe>+#<_pz-origin>]
 
    G0 X-[#241+[#5410/2]] Y#240 ; x/y values from reed
    G0 Z-.3
@@ -34,16 +32,16 @@
    (MSG, hit resume or s button to continue)
    M0                         ; wait on resume button
 
-   G0 Z#<_safe-z>
+   G0 Z#<safe-z>
    G0 X-[#241+[#5410/2]] Y[#<_reed-length>-#240] ; x/y values from reed
    G0 Z-.3
    (MSG, place reed against probe and back screw against reed)
    (MSG, hit resume or s button to continue)
    M0                         ; wait on resume button
 
+   G53 G0 Z0
    M5                      ; stop spindle
 
-   G53 G0 Z0
    G53 G0 X0 Y0
 
    G54      ; coord system 1

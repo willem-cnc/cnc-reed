@@ -1,0 +1,56 @@
+;
+; make bed for reed
+; dimensions #<_pipe-radius> and #<_i-sink>
+;
+
+   o<version> call                        ; display set version
+   o<machine> call                        ; get coordinaten
+
+   G17      ; xy plane
+   G54      ; coord system 1
+   G40      ; compensation off
+   G49      ; tool length comp off
+   G80      ; canning cycle off
+   G90      ; absolute mode
+   G21      ; metric
+   G61      ; exact mode
+
+   G53 G0 Z0               ; safe hight
+
+   M5                      ; stop spindle
+
+   #<_req-tool> = 1        ; ball nose r = .5 mm
+   o<change-tool> call     ; change tool and messure
+   G10 L2 P1 X#<_ix-origin> Y#<_iy-origin> Z[#<_value>-#<_iz-probe>+#<_iz-origin>]
+
+   S1000 M3                ; start spindle clock wise
+   G4 P3                   ; wait 3 seconds for spindlespeed
+
+;
+; left hand circuit
+;
+   #<delta-x> = 0
+   G0 X0 Y-2
+   o100 while [#<delta-x> LE 8]
+      #<current-z> = [#<_pipe-radius> - #<_i-sink-z> - sqrt[#<_pipe-radius>**2 - #<delta-x>**2]]
+      ; make line on right hand side
+      G1 X#<delta-x> F500
+      G1 Z#<current-z>
+      G1 Y147 Z#<current-z>
+      ; make line on left hand side
+      G1 X-#<delta-x>
+      G1 Y-2 Z #<current-z>
+      #<delta-x> = [#<delta-x> + .32]
+   o100 endwhile
+
+   G53 G0 Z0                  ; safe hight
+   M5                         ; stop spindle
+
+   G53 G0 X0 Y0
+
+   G54      ; coord system 1
+   G90      ; absolute  distance
+   G80      ; canning cycle off
+   G40      ; compensation off
+   G64      ; cancel exact mode
+   M2       ; end of programm

@@ -1,5 +1,4 @@
 ; definition for locations for reed production
-; called in inside and blade
 
 o<machine> sub
 
@@ -10,22 +9,23 @@ o<machine> sub
    #<_y-touch>  =  145                        ; point on touch plate
    #<_z-touch>  = -67                         ; no tool injected 
 ;
-; definitions for inside
+; definitions for inside (gouging & modelling)
 ;
    #<_ix-origin>  =  36.000                  ; middle of reed carrier
    #<_iy-origin>  =  -3.500                  ; start of reed
    #<_iz-origin>  = -37.100                  ; top of reed carrier
    #<_iz-probe>   = -35.363                  ; probe touch value
 ;
-; definitions for blade
+; definitions for profiling
 ;
-   #<_bx-origin>  =  136.000                 ; middle of reed carrier
-   #<_by-origin>  =   6.500                  ; start of reed
-   #<_bz-origin>  = -31.800                  ; top of reed carrier
-   #<_bz-probe>   = -35.363                  ; probe touch value
+   #<_px-origin>  =  136.000                 ; middle of reed carrier
+   #<_py-origin>  =   6.500                  ; start of reed
+   #<_pz-origin>  = -31.800                  ; top of reed carrier
+   #<_pz-probe>   = -35.363                  ; probe touch value
 ;
 ;common definitions
 ;
+   #<_pipe-radius>   = 12.5                  ; outside radius of reed
    #<_b-radius>      = 13                    ; radius of blade roll
    #<_i-sink-z>      = .60                   ; reed sinks in carrier
    #<_i-delta-z>     = 0                     ; difference depth front back

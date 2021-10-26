@@ -1,0 +1,82 @@
+;
+; gouging programm
+;
+   o<version> call                        ; display set version
+   o<machine> call                        ; get machine definitions
+   o<reed> call                           ; reed parameters
+
+   G17      ; xy plane
+   G54      ; coord system 1
+   G40      ; compensation off
+   G49      ; tool length comp off
+   G80      ; canning cycle off
+   G90      ; absolute mode
+   G21      ; metric
+   G61      ; exact mode
+
+   ; model definitions from reed
+   ; #<_first-p>        ; start of profile table
+   ; #<_last-p>         ; last entry profile table
+   ; #<_m-x>            ; element half model width
+   ; #<_m-s>            ; element size
+
+   G53 G0 Z0                  ; safe hight
+   ;
+   ; parameters
+   ;
+   #<feed-rate> = 750
+   #<i-center-z> = [#<_i-radius> + #<_i-thickness>]
+
+   M5                         ; stop spindle
+
+   #<_req-tool> = 1        ; ball nose r = .5 mm
+   o<change-tool> call     ; change tool and messure
+   G10 L2 P1 X#<_ix-origin> Y[#<_iy-origin>+#<_scratch-size>] Z[#<_value>-#<_iz-probe>+#<_iz-origin>-#<_i-sink-z>]
+
+   F#<feed-rate>
+;
+;  search greatest width
+;
+   #<model-pointer> = #<_first-m>
+   #<biggest> = 0
+   o10 while [#<model-pointer> LE #<_last-m>]
+      #<cur-x> = #[#<model-pointer> + #<_m-x>]
+      o20 if [#<cur-x> GT #<biggest>]
+         #<biggest> = #<cur-x>
+      o20 endif
+      #<model-pointer> = [#<model-pointer> + #<_m-s>]
+   o10 endwhile
+   #<step-size> = [#<biggest> / #<_gouge-steps>]
+
+   S1000 M3                ; start spindle clock wise
+   G4 P3                   ; wait 3 seconds for spindlespeed
+   ;
+   ; left hand circuit
+   ;
+   #<delta-x> = 0
+   G0 X0 Y[#5410/2]
+   o200 while [#<delta-x> LE #<biggest>]
+      #<current-z> = [#<i-center-z> - sqrt[#<_i-radius>**2 - #<delta-x>**2]]
+      ; make line on right hand side
+      G1 X#<delta-x>
+      G1 Z#<current-z>
+      G1 Y[#<_reed-length> - [#5410/2]] Z[#<current-z> + #<_i-delta-z>]
+      ; make line on left hand side
+      G1 X-#<delta-x>
+      G1 Y[#5410/2] Z #<current-z>
+      #<delta-x> = [#<delta-x> + #<step-size>]
+   o200 endwhile
+
+   G53 G0 Z0                  ; safe hight
+   M5                         ; stop spindle
+
+   G53 G0 X0 Y0
+
+   G54      ; coord system 1
+   G90      ; absolute  distance
+   G80      ; canning cycle off
+   G40      ; compensation off
+   G64      ; cancel exact mode
+   M2       ; end of programm
+
+

@@ -1,35 +1,57 @@
-; do_blade_final
-; program for production of bassoon reed blades
+;
+; profiling program (double barrel)
+;
+   o<version> call                     ; display set version
+   o<machine> call                     ; get x,y & z origin definitions
+   o<reed> call                        ; get reed parameters
 
-; model definitions from calling programm
-; #<_first-m>        ; start of model table
+   G17      ; xy plane
+   G54      ; coord system 1
+   G40      ; compensation off
+   G49      ; tool length comp off
+   G80      ; canning cycle off
+   G90      ; absolute mode
+   G21      ; metric
+   G61      ; exact mode
 
-; profile definitions from calling programm
-; #<_first-p>        ; start of profile table
-; #<_last-p>         ; last entry of profile table
-; #<_m-y>            ; element measure point from bottom
-; #<_m-x>            ; element half model width
-; #<_p-z>            ; element raw z (first pass)
-; #<_p-ra>           ; element rails value
-; #<_p-ch>           ; element channel value
-; #<_p-ce>           ; element center value
-; #<_p-cal>          ; element number of calculated points
-; #<_p-steps>        ; element number of profile steps
-; #<_m-s>            ; element size
+   ; profile definitions from calling programm
+   ; #<_first-p>        ; start of profile table
+   ; #<_last-p>         ; last entry of profile table
+   ; #<_m-y>            ; element measure point from bottom
+   ; #<_m-x>            ; element half model width
+   ; #<_p-ra>           ; element rails value
+   ; #<_p-ch>           ; element channel value
+   ; #<_p-ce>           ; element center value
+   ; #<_p-cal>          ; element number of calculated points
+   ; #<_p-steps>        ; element number of profile steps
+   ; #<_m-s>            ; element size
 
-o<do_blade_final> sub
-
-; parameters for calculated points between 
-; rail - channel
-; center - channel
-
+   ;
+   ; parameters
+   ;
+   #<z-margin>       = 0               ; extra margin for smoothing/testing
+   #<safe-z>         = 5
+   ;
+   ; parameters for calculated points between 
+   ; rail - channel & center - channel
+   ;
    #<cp-x>  = 0            ; element x value
    #<cp-z>  = 1            ; element z value
    #<cp-s>  = 2            ; element size
 
-   F350
-   G0 Z#<_safe-z>
+   G53 G0 Z0               ; safe hight
+   M5                      ; stop spindle
+   
+   #<_req-tool> = 1        ; ball nose r = .5 mm
+   o<change-tool> call     ; change tool and messure
+   G10 L2 P1 X#<_px-origin> Y#<_py-origin> Z[#<_value>-#<_pz-probe>+#<_pz-origin>+#<z-margin>]
+
+   S1000 M3                ; start spindle clock wise
+   G4 P3                   ; wait 3 seconds for spindlespeed
    G0 X#[#<_first-p> + #<_m-x>] Y#[#<_first-p> + #<_m-y>] ; initial move
+
+   F350
+   G0 Z#<safe-z>
 
    #<p-element> = #<_first-p>
    o200 while [#<p-element> LT #<_last-p>]
@@ -132,8 +154,14 @@ o<do_blade_final> sub
       #<p-element> = [#<p-element> + #<_m-s>]   ; next profile element
    o200 endwhile
 
-   G0 Z#<_safe-z>
+   G53 G0 Z0
+   M5                      ; stop spindle
 
-o<do_blade> endsub
+   G53 G0 X0 Y0
 
-M2    ; programm end
+   G54      ; coord system 1
+   G90      ; absolute  distance
+   G80      ; canning cycle off
+   G40      ; compensation off
+   G64      ; cancel exact mode
+   M2       ; end of programm

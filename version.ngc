@@ -1,0 +1,9 @@
+; display of progam set version
+
+o<version> sub
+
+   (DEBUG, Set version: 5)
+
+o<version> endsub
+
+   M2    ; programm end

@@ -1,0 +1,74 @@
+; definition of reed dimensions for double barrel profiling
+
+o<reed> sub
+
+   (DEBUG, double barrel versie: x)
+
+   #<_reed-length>   = 120
+   #<_scratch-size>  = 10              ; space at each side of the reed
+   #<_i-radius>      = #<_b-radius>    ; inside radius = blade roll
+   #<_i-thickness>   = 1.35            ; middle of the reed
+   #<_gouge-steps>   = 25              ; number of steps
+
+; reed definition table
+; y ascending values all values in mm
+; model: Chiarugi Miller #1A
+; profile: Terry Ewell measurements #45
+;
+   #<_first-m> = 100                ; start of model table
+   #<_last-m>  = 400                ; last entry of model table
+   #<_first-p> = 250                ; start of profile table
+   #<_last-p>  = 400                ; last entry profile table
+   #<_m-y>     = 0                  ; element measure point from bottom
+   #<_m-x>     = 1                  ; element half model width
+   #<_p-ra>    = 3                  ; element rails thickness value
+   #<_p-ch>    = 4                  ; element channel thickness value
+   #<_p-ce>    = 5                  ; element center thickness value
+   #<_p-cal>   = 6                  ; element number of calculated points
+   #<_p-steps> = 7                  ; element number of profile steps
+   #<_m-s>     = 10                 ; element size
+
+; when modelling is not done with modelling.ngc (p.e. by hand)
+; remove variables #100 - #231
+; set #<_first-m> and #<_last-m> equal to #<_first-p> and#<_last-p>
+
+#100 = 00 #101 = 4.77
+#110 = 02 #111 = 4.73
+#120 = 04 #121 = 4.68
+#130 = 06 #131 = 4.63
+#140 = 08 #141 = 4.58
+#150 = 10 #151 = 4.54
+#160 = 12 #161 = 4.49
+#170 = 14 #171 = 4.47
+#180 = 16 #181 = 4.44
+#190 = 18 #191 = 4.41
+#200 = 20 #201 = 4.39
+#210 = 22 #211 = 4.41
+#220 = 24 #221 = 4.44
+#230 = 26 #231 = 4.51
+#240 = 28 #241 = 4.57
+#250 = 29 #251 = 4.65 #253 = .90 #254 = .82 #255 = .82 #256 = 5 #257 = 6
+#260 = 31 #261 = 4.82 #263 = .83 #264 = .78 #265 = .76 #266 = 5 #267 = 6
+#270 = 33 #271 = 5.01 #273 = .80 #274 = .75 #275 = .74 #276 = 5 #277 = 6
+#280 = 35 #281 = 5.19 #283 = .72 #284 = .73 #285 = .72 #286 = 5 #287 = 6
+#290 = 37 #291 = 5.39 #293 = .66 #294 = .70 #295 = .70 #296 = 5 #297 = 6
+#300 = 39 #301 = 5.60 #303 = .59 #304 = .65 #305 = .69 #306 = 5 #307 = 6
+#310 = 41 #311 = 5.83 #313 = .56 #314 = .63 #315 = .67 #316 = 5 #317 = 6
+#320 = 43 #321 = 6.07 #323 = .53 #324 = .60 #325 = .63 #326 = 5 #327 = 6
+#330 = 45 #331 = 6.31 #333 = .46 #334 = .57 #335 = .58 #336 = 5 #337 = 6
+#340 = 47 #341 = 6.55 #343 = .40 #344 = .52 #345 = .54 #346 = 5 #347 = 6
+#350 = 49 #351 = 6.79 #353 = .30 #354 = .47 #355 = .49 #356 = 5 #357 = 6
+#360 = 51 #361 = 7.03 #363 = .30 #364 = .38 #365 = .41 #366 = 5 #367 = 6
+#370 = 53 #371 = 7.28 #373 = .30 #374 = .38 #375 = .38 #376 = 5 #377 = 6
+#380 = 55 #381 = 7.50 #383 = .30 #384 = .38 #385 = .38 #386 = 5 #387 = 6
+#390 = 57 #391 = 7.68 #393 = .30 #394 = .38 #395 = .38 #396 = 5 #397 = 9
+#400 = 60 #401 = 7.70 #403 = .30 #404 = .38 #405 = .38 #406 = 5 #407 = 6
+
+;
+; table to store calculated points
+;
+   #<_point-store>      = 500
+
+o<reed> endsub
+
+   M2    ; programm end

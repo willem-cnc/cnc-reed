@@ -32,8 +32,9 @@ My hardware consists off:
    - SSD Crucial 120GB
 - milling machine
    - designed with freecad and build with aluminium (based on grabcad model)
-- gouching carrier
+- gouching/modelling carrier
    - 20x20 aluminium profile
+   - wooden plate with bed for reed
 - profiling carrier
    - 20x20 aluminium profile
    - aluminium pipe D=26
@@ -41,35 +42,32 @@ My hardware consists off:
    - iron key plate
 
 The software consists off:
-- linuxcnc
+- linuxcnc 2.8.2
    RTAI kernel (amd64)
 - machine.ngc
    properties of the machine
-   locations and dimensions
-      - of gouging carrier
-      - of profiling carrier
-      - of tool probe
+   locations and dimensions of:
+      - gouging carrier
+      - profiling carrier
+      - tool probe
 - reed.ngc or link to a named-reed file
    parameters of a reed
    gouging, modelling and profiling
-- inside.ngc
-   setup for gouging and modelling
-   start do_inside and/or do_model
-- do_gouge.ngc
+   examples for gouging, modelling and profiling-db or profiling-sb
+- gouging.ngc
    gouging using reed parameters
-- do_model.ngc
+- modelling.ngc
    modelling using reed parameters
-- blade_screws.ngc
+- profile-screws.ngc
    screw setting for reed positioning
-- blade.ngc
-   setup for profiling
-   start do_blade_raw and/or do_blade_final
-- do_blade_raw.ngc
-   first step profiling in length of blade
-- do_blade_final.ngc
-   second step profiling transverse of blade
-- change_tool.ngc
+- profiling-db.ngc
+   profiling like a double barrel profiler
+- profiling-sb.ngc
+   profiling like a single barrel profiler
+- change-tool.ngc
    request tool mount and measure tool length
+- carrier-inside.ngc
+   creates the reedbed for gouging/modelling
 
 There are video's of the tools and each step on vimeo.com
 - tools
@@ -80,8 +78,8 @@ There are video's of the tools and each step on vimeo.com
   https://vimeo.com/543153372
 - modelling
   https://vimeo.com/543191996
-- profiling (raw)
+- profiling single barrel
   https://vimeo.com/543208011
-- profiling (final)
+- profiling double barrel
   https://vimeo.com/543265566
 
