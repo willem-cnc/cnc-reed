@@ -33,7 +33,7 @@
 
    #<_req-tool> = 11       ; finger type r = 1.25 mm
    o<change-tool> call     ; change tool and messure
-   G10 L2 P1 X#<_ix-origin> Y[#<_iy-origin>+#<_scratch-size>] Z[#<_value>-#<_iz-probe>+#<_iz-origin>+#<model-margin>]
+   G10 L2 P1 X#<_ix-origin> Y#<_iy-origin> Z[#<_value>-#<_z-probe>+#<_iz-origin>+#<model-margin>]
 
    F#<feed-rate>
 

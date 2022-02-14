@@ -24,7 +24,7 @@
 
    #<_req-tool> = 100       ; ball nose r = .5 mm
    o<change-tool> call     ; change tool and messure
-   G10 L2 P1 X#<_px-origin> Y#<_py-origin> Z[#<_value>-#<_pz-probe>+#<_pz-origin>]
+   G10 L2 P1 X#<_px-origin> Y#<_py-origin> Z[#<_value>-#<_z-probe>+#<_pz-origin>]
 
    G0 X-[#241+[#5410/2]] Y#240 ; x/y values from reed
    G0 Z-.3

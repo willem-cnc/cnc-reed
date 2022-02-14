@@ -4,8 +4,6 @@ o<reed> sub
 
    (DEBUG, double barrel versie: x)
 
-   #<_reed-length>   = 120
-   #<_scratch-size>  = 10              ; space at each side of the reed
    #<_i-radius>      = #<_b-radius>    ; inside radius = blade roll
    #<_i-thickness>   = 1.35            ; middle of the reed
    #<_gouge-steps>   = 25              ; number of steps

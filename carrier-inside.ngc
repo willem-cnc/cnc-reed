@@ -21,7 +21,7 @@
 
    #<_req-tool> = 1        ; ball nose r = .5 mm
    o<change-tool> call     ; change tool and messure
-   G10 L2 P1 X#<_ix-origin> Y#<_iy-origin> Z[#<_value>-#<_iz-probe>+#<_iz-origin>]
+   G10 L2 P1 X#<_ix-origin> Y#<_iy-origin> Z[#<_value>-#<_z-probe>+#<_iz-origin>]
 
    S1000 M3                ; start spindle clock wise
    G4 P3                   ; wait 3 seconds for spindlespeed
