@@ -3,7 +3,7 @@
 ;
    o<version> call                     ; display set version
    o<machine> call                     ; get x,y & z origin definitions
-   o<reed> call                        ; get reed parameters
+   o<model> call                       ; get model parameters
 
    G17      ; xy plane
    G54      ; coord system 1

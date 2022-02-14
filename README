@@ -52,8 +52,11 @@ The software consists off:
       - tool probe
 - reed.ngc or link to a named-reed file
    parameters of a reed
-   gouging, modelling and profiling
+   gouging and profiling
    examples for gouging, modelling and profiling-db or profiling-sb
+- model.ngc or link to a named-model file
+   parameters for modelling
+   example for model in model.ngc
 - gouging.ngc
    gouging using reed parameters
 - modelling.ngc

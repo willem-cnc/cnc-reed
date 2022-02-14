@@ -3,7 +3,7 @@
 ;
    o<version> call                        ; display set version
    o<machine> call                        ; get machine definitions
-   o<reed> call                           ; reed parameters
+   o<model> call                          ; model parameters
 
    G17      ; xy plane
    G54      ; coord system 1
