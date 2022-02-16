@@ -58,6 +58,7 @@ o<machine> sub
    #<_pipe-radius>   = 12.5                  ; outside radius of reed
    #<_b-radius>      = 13                    ; radius of blade roll
    #<_bed-length>    = 140                   ; length for gouging bed
+   #<_scratch-size>  = 10                    ; space for gouging clips
    #<_gouge-length>  = 128                   ; between clamps
    #<_reed-length>   = 120                   ; length of the final reed 
    #<_i-sink-z>      = 3.75                  ; reed sinks in carrier

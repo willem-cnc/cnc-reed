@@ -27,20 +27,20 @@
    G4 P3                   ; wait 3 seconds for spindlespeed
 
 ;
-; left hand circuit
+; right hand circuit
 ;
-   #<delta-x> = 0
-   G0 X0 Y-2
-   o100 while [#<delta-x> LE 8]
+   #<delta-x> = 8
+   G0 X0 Y-#<_scratch-size>
+   o100 while [#<delta-x> GE 0]
       #<current-z> = [#<_pipe-radius> - #<_i-sink-z> - sqrt[#<_pipe-radius>**2 - #<delta-x>**2]]
-      ; make line on right hand side
-      G1 X#<delta-x> F500
+      ; line on left hand side
+      G1 X-#<delta-x> F500
       G1 Z#<current-z>
-      G1 Y147 Z#<current-z>
-      ; make line on left hand side
-      G1 X-#<delta-x>
-      G1 Y-2 Z #<current-z>
-      #<delta-x> = [#<delta-x> + .32]
+      G1 Y#<_bed-length> Z#<current-z>
+      ; line on right hand side
+      G1 X#<delta-x>
+      G1 Y-#<_scratch-size> Z #<current-z>
+      #<delta-x> = [#<delta-x> - .32]
    o100 endwhile
 
    G53 G0 Z0                  ; safe hight

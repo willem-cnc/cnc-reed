@@ -22,8 +22,6 @@ Machine parameters
       usedby:   carrier-inside, gouging, modelling
    #<_iz-origin>     top carrier gouging/modelling
       used by:  carrier-inside, gouging, modelling
-   #<_iz-probe>      tool z for iz-origin          
-      used by:  carrier-inside, gouging, modelling
       
    #<_px-origin>     center profileroll
       used by:  profile-screws, profiling-sb, profiling-db
@@ -31,18 +29,28 @@ Machine parameters
       used by:  profile-screws, profiling-sb, profiling-db
    #<_pz-origin>     top profileroll
       used by:  profile-screws, profiling-sb, profiling-db
-   #<_pz-probe>      tool z for pz-origin
-      used by:  profile-screws, profiling-sb, profiling-db
+
+   #<_z-probe>      tool z for iz-origin & pz-origin          
+      used by:  carrier-inside, gouging, modelling
+                profile-screws, profiling-sb, profiling-db
 
    #<_pipe-radius>   outside radius reed pipe
       used by:  carrier-inside
    #<_b-radius>      radius profileroll
       used by:  gouging, profiling-sb, profiling-db
+   #<_bed-length>    length of gouging bed
+      used by:  carrier-inside
+   #<_scratch-size>  space for gouging clips
+      used by:  carrier-inside
+   #<_gouge-length>  length between clamps
+      used by:  gouging
+   #<_reed-length>   length of the final reed
+      used by:  modelling, profile-screws
    #<_i-sink-z>      depth in gouging carrier
       used by:  carrier-inside, gouging
    #<_i-delta-z>     difference z front/back
       used by:  carrier-inside, gouging
-
+   #<_i-delta-x>  gouging
 
 Reed parameters
 
@@ -52,10 +60,6 @@ Reed parameters
    You can make a link too a named file with ln -sf definitie.ngc 
    reed.ngc. (ln -sf stees.ngc reed.ngc).
 
-   #<_reed-length>   length of the reed
-      used by:  carrier-inside, gouging
-   #<_scratch-size>  space for clamping reed
-      used by:  gouging, modelling
    #<_i-radius>      gouging radius = radius profileroll
       used by:  gouging, profiling-sb, profiling-db
    #<_i-thickness>   thickness in the center for gouging
@@ -68,7 +72,6 @@ Reed parameters
       used by:  profiling-sb
    #<_point-store>   value for table with profile calculation points
       used by:  profiling-db
-
 
    The next table is a list of elements for a combination of model and profile elements. 
 
