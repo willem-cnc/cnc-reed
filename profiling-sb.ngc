@@ -29,7 +29,7 @@
    ; parameters
    ;
    #<z-margin>       = 0               ; extra margin for smoothing/testing
-   #<_safe-z>        = 5
+   #<safe-z>         = 3
 
    M5                      ; stop spindle
    
@@ -39,7 +39,8 @@
 
    S1000 M3                ; start spindle clock wise
    G4 P3                   ; wait 3 seconds for spindlespeed
-   G0 X#[#<_first-p> + #<_m-x>] Y#[#<_first-p> + #<_m-y>] ; initial move
+   G0 X-#[#<_last-p> + #<_m-x>] Y#[#<_first-p> + #<_m-y>] ; initial move
+   G0 Z#<safe-z>
 
    ; blade is made with right hand circuit
    ; outside to middle of the reed
@@ -67,7 +68,7 @@
          o125 endif
          #<element> = [#<element> + #<_m-s>]
       o120 endwhile
-      G0 Z#<_safe-z>
+      G0 Z#<safe-z>
       ;
       ; make line on right hand side
       ;
@@ -86,7 +87,7 @@
          #<element> = [#<element> - #<_m-s>]
       o130 endwhile
 
-      G0 Z#<_safe-z>
+      G0 Z#<safe-z>
       ;
       ; next angle
       ;

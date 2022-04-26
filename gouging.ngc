@@ -26,6 +26,7 @@
    ;
    #<feed-rate> = 1000
    #<i-center-z> = [#<_i-radius> + #<_i-thickness>]
+   #<safe-z> = 5
 
    M5                         ; stop spindle
 
@@ -34,26 +35,31 @@
    G10 L2 P1 X#<_ix-origin> Y#<_iy-origin> Z[#<_value>-#<_z-probe>+#<_iz-origin>-#<_i-sink-z>]
 
    F#<feed-rate>
-;
-;  search greatest width
-;
-   #<model-pointer> = #<_first-m>
-   #<biggest> = 0
-   o10 while [#<model-pointer> LE #<_last-m>]
-      #<cur-x> = #[#<model-pointer> + #<_m-x>]
-      o20 if [#<cur-x> GT #<biggest>]
-         #<biggest> = #<cur-x>
-      o20 endif
-      #<model-pointer> = [#<model-pointer> + #<_m-s>]
-   o10 endwhile
-   #<step-size> = [#<biggest> / #<_gouge-steps>]
+
+   #<step-size> = [#<_big-gouge> / #<_gouge-steps>]
 
    S1000 M3                ; start spindle clock wise
    G4 P3                   ; wait 3 seconds for spindlespeed
    ;
-   ; right hand circuit
+   ; right hand circuit blade part
    ;
-   #<delta-x> = #<biggest>
+   #<delta-x> = #<_big-gouge>
+   G0 X-#<delta-x> Y[#<_blade-block> + [#5410/2]]
+   o100 while [#<delta-x> GT #<_small-gouge>]
+      #<current-z> = [#<i-center-z> - sqrt[#<_i-radius>**2 - #<delta-x>**2]]
+      ; line on left hand side
+      G1 X-#<delta-x>
+      G1 Z#<current-z>
+      G1 X-#<delta-x> Y[#<_gouge-length> - #<_blade-block> - [#5410/2]] Z[#<current-z> + #<_i-delta-z>]
+      ; line on right hand side
+      G1 X#<delta-x>
+      G1 Y[#<_blade-block> + [#5410/2]] Z#<current-z>
+      #<delta-x> = [#<delta-x> - #<step-size>]
+   o100 endwhile
+   ;
+   ; right hand circuit tube part
+   ;
+   G0 Z#<safe-z>
    G0 X-#<delta-x> Y[#5410/2]
    o200 while [#<delta-x> GE 0]
       #<current-z> = [#<i-center-z> - sqrt[#<_i-radius>**2 - #<delta-x>**2]]

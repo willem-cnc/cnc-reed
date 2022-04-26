@@ -30,7 +30,7 @@
    ; parameters
    ;
    #<z-margin>       = 0               ; extra margin for smoothing/testing
-   #<safe-z>         = 5
+   #<safe-z>         = 3
    ;
    ; parameters for calculated points between 
    ; rail - channel & center - channel
@@ -49,9 +49,9 @@
    S1000 M3                ; start spindle clock wise
    G4 P3                   ; wait 3 seconds for spindlespeed
    G0 X#[#<_first-p> + #<_m-x>] Y#[#<_first-p> + #<_m-y>] ; initial move
+   G0 Z#<safe-z>
 
    F350
-   G0 Z#<safe-z>
 
    #<p-element> = #<_first-p>
    o200 while [#<p-element> LT #<_last-p>]
