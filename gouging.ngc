@@ -24,7 +24,7 @@
    ;
    ; parameters
    ;
-   #<feed-rate> = 750
+   #<feed-rate> = 1000
    #<i-center-z> = [#<_i-radius> + #<_i-thickness>]
 
    M5                         ; stop spindle
@@ -67,10 +67,8 @@
       #<delta-x> = [#<delta-x> - #<step-size>]
    o200 endwhile
 
-   G53 G0 Z0                  ; safe hight
    M5                         ; stop spindle
-
-   G53 G0 X0 Y0
+   G53 G0 Z0                  ; safe hight
 
    G54      ; coord system 1
    G90      ; absolute  distance

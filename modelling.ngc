@@ -79,11 +79,8 @@
       #<_delta-x> = [#<_delta-x> - 0.75]
    o220 endwhile
 
-   G53 G0 Z0                  ; safe hight
    M5                         ; stop spindle
-
    G53 G0 Z0                  ; safe hight
-   G53 G0 X0 Y0
 
    G54      ; coord system 1
    G90      ; absolute  distance
