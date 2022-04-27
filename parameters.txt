@@ -50,14 +50,15 @@ Machine parameters
       used by:  carrier-inside, gouging
    #<_i-delta-z>     difference z front/back
       used by:  carrier-inside, gouging
-   #<_i-delta-x>  gouging
+   #<_i-delta-x>     difference x front/back
+      used by: gouging
 
 Reed parameters
 
    All programs are using reed parameters. The file "reed.ngc" defines
    the reed parameters. The file is constructed as subroutine and is
    called by the programs. After the call these parameters are defined.
-   You can make a link too a named file with ln -sf definitie.ngc 
+   You can make a link too a named file with ln -sf definition.ngc 
    reed.ngc. (ln -sf stees.ngc reed.ngc).
 
    #<_i-radius>      gouging radius = radius profileroll
@@ -65,6 +66,12 @@ Reed parameters
    #<_i-thickness>   thickness in the center for gouging
       used by:  gouging
    #<_gouge-steps>   number of steps for gouging
+      used by:  gouging
+   #<_big-gouge>     width for blade gouge block (if < small-gouge => gouging full length)
+      used by:  gouging
+   #<_small-gouge>   width for shaft gouge block
+      used by:  gouging
+   #<_blade-block>   start y for blade block
       used by:  gouging
    #<_b-start-angle> angle first profileline (frontview profileroll)
       used by:  profiling-sb
@@ -76,9 +83,9 @@ Reed parameters
    The next table is a list of elements for a combination of model and profile elements. 
 
    #<_first-m>       value of first model element
-      used by:  gouging, modelling
+      used by:  modelling
    #<_last-m>        value of last model element
-      used by:  gouging, modelling
+      used by:  modelling
    #<_first-p>       value of fist profile element (>= first-m)
       used by:  profiling-sb, profiling-db
    #<_last-p>        value of last profile element (<= last-m)
@@ -97,14 +104,12 @@ Reed parameters
       used by:  profiling-db
    #<_p-ce> (5)      center thickness for this y
       used by:  profiling-db
-   #<_p-cal> (6)     number of calculationpoints center-channel
-                     and channel-rail
+   #<_p-cal> (6)     number of calculationpoints center-channel and channel-rail
       used by:  profiling-db
    #<_p-steps> (7)   number of y increments too m-y of next element
       used by:  profiling-db
    #<_m-s> (10)      element size (rounded on 10 for readability)
-      used by:  gouging, modelling, profile-screws, profiling-sb,
-               profiling-db
+      used by:  modelling, profile-screws, profiling-sb, profiling-db
 
    center is the middle of the reed
    channel is middle between center and rail

@@ -32,7 +32,7 @@ My hardware consists off:
    - SSD Crucial 120GB
 - milling machine
    - designed with freecad and build with aluminium (based on grabcad model)
-- gouching/modelling carrier
+- gouging/modelling carrier
    - 20x20 aluminium profile
    - wooden plate with bed for reed
 - profiling carrier
@@ -53,7 +53,7 @@ The software consists off:
 - reed.ngc or link to a named-reed file
    parameters of a reed
    gouging and profiling
-   examples for gouging, modelling and profiling-db or profiling-sb
+   herzberg.ngc as example
 - model.ngc or link to a named-model file
    parameters for modelling
    example for model in model.ngc
@@ -72,7 +72,7 @@ The software consists off:
 - carrier-inside.ngc
    creates the reedbed for gouging/modelling
 
-There are video's of the tools and each step on vimeo.com
+There are (outdated) video's of the tools and each step on vimeo.com
 - tools
   https://vimeo.com/539634631
 - splitting
@@ -85,4 +85,6 @@ There are video's of the tools and each step on vimeo.com
   https://vimeo.com/543208011
 - profiling double barrel
   https://vimeo.com/543265566
+
+On youtube there are also video's in the cnc-reed channel.
 

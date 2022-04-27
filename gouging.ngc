@@ -14,12 +14,6 @@
    G21      ; metric
    G61      ; exact mode
 
-   ; model definitions from reed
-   ; #<_first-p>        ; start of profile table
-   ; #<_last-p>         ; last entry profile table
-   ; #<_m-x>            ; element half model width
-   ; #<_m-s>            ; element size
-
    G53 G0 Z0                  ; safe hight
    ;
    ; parameters
