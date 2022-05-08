@@ -67,9 +67,9 @@ Reed parameters
       used by:  gouging
    #<_gouge-steps>   number of steps for gouging
       used by:  gouging
-   #<_big-gouge>     width for blade gouge block (if < small-gouge => gouging full length)
+   #<_big-gouge>     width for blade gouge block 
       used by:  gouging
-   #<_small-gouge>   width for shaft gouge block
+   #<_small-gouge>   width for shaft gouge block (if eq big-gouge => gouging full length)
       used by:  gouging
    #<_blade-block>   start y for blade block
       used by:  gouging
