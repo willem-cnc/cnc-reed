@@ -33,7 +33,6 @@
    #<step-size> = [#<_big-gouge> / #<_gouge-steps>]
 
    S1000 M3                ; start spindle clock wise
-   G4 P3                   ; wait 3 seconds for spindlespeed
    ;
    ; right hand circuit blade part
    ;

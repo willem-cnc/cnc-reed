@@ -38,7 +38,6 @@
    F#<feed-rate>
 
    S1000 M3                ; start spindle clockwise
-   G4 P3                   ; wait 3 seconds for spindlespeed
 
    #<_delta-x> = [3 + [#5410/2]]
    o220 while [[#<_delta-x> - [#5410/2]] GE -0.01]

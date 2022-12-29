@@ -24,7 +24,6 @@
    G10 L2 P1 X#<_ix-origin> Y#<_iy-origin> Z[#<_value>-#<_z-probe>+#<_iz-origin>]
 
    S1000 M3                ; start spindle clock wise
-   G4 P3                   ; wait 3 seconds for spindlespeed
 
 ;
 ; right hand circuit

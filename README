@@ -24,7 +24,6 @@ My hardware consists off:
 - pipe splitter
    4 knives
    4 quarter round 7 mm
-   4 aluminium stops
    1 multiplex plate
 - computer
    - Intel D945GCLF2 with ATOM 330 1.6 GHz (1 core disabled)
@@ -72,19 +71,5 @@ The software consists off:
 - carrier-inside.ngc
    creates the reedbed for gouging/modelling
 
-There are (outdated) video's of the tools and each step on vimeo.com
-- tools
-  https://vimeo.com/539634631
-- splitting
-  https://vimeo.com/555666241
-- gouging
-  https://vimeo.com/543153372
-- modelling
-  https://vimeo.com/543191996
-- profiling single barrel
-  https://vimeo.com/543208011
-- profiling double barrel
-  https://vimeo.com/543265566
-
-On youtube there are also video's in the cnc-reed channel.
-
+There are demonstration video's on youtube.com 
+- https://www.youtube.com/@cncreed7468

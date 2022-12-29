@@ -47,7 +47,6 @@
    G10 L2 P1 X#<_px-origin> Y#<_py-origin> Z[#<_value>-#<_z-probe>+#<_pz-origin>+#<z-margin>]
 
    S1000 M3                ; start spindle clock wise
-   G4 P3                   ; wait 3 seconds for spindlespeed
    G0 X#[#<_first-p> + #<_m-x>] Y#[#<_first-p> + #<_m-y>] ; initial move
    G0 Z#<safe-z>
 
