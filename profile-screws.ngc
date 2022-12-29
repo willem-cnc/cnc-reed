@@ -22,20 +22,33 @@
 
    M5                      ; stop spindle
 
-   #<_req-tool> = 100       ; ball nose r = .5 mm
+   #<_req-tool> = 1        ; ball nose r = .5 mm
    o<change-tool> call     ; change tool and messure
    G10 L2 P1 X#<_px-origin> Y#<_py-origin> Z[#<_value>-#<_z-probe>+#<_pz-origin>]
 
-   G0 X-[#241+[#5410/2]] Y#240 ; x/y values from reed
-   G0 Z-.3
-   (MSG, place reed against probe and front screw against reed)
+   G0 X-#321 Y#320         ; x/y values from reed
+   G0 Z0
+   (MSG, check if tip is over the left side of the reed )
+   (MSG, hit resume or s button to continue)
+   M0                      ; wait on resume button
+   G0 Z#<safe-z>
+   G0 X#321                ; x/y values from reed
+   G0 Z0
+   (MSG, check if tip is over the right side of the reed )
    (MSG, hit resume or s button to continue)
    M0                         ; wait on resume button
 
+
    G0 Z#<safe-z>
-   G0 X-[#241+[#5410/2]] Y[#<_reed-length>-#240] ; x/y values from reed
-   G0 Z-.3
-   (MSG, place reed against probe and back screw against reed)
+   G0 X-#321 Y[#<_reed-length>-#320] ; x/y values from reed
+   G0 Z0
+   (MSG, check if tip is over the left side of the reed )
+   (MSG, hit resume or s button to continue)
+   M0                      ; wait on resume button
+   G0 Z#<safe-z>
+   G0 X#321                ; x/y values from reed
+   G0 Z0
+   (MSG, check if tip is over the right side of the reed )
    (MSG, hit resume or s button to continue)
    M0                         ; wait on resume button
 
