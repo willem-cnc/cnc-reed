@@ -19,7 +19,7 @@
 
    M5                      ; stop spindle
 
-   #<_req-tool> = 1        ; ball nose r = .5 mm
+   #<_req-tool> = #<_ball-nose-0.5>
    o<change-tool> call     ; change tool and messure
    G10 L2 P1 X#<_ix-origin> Y#<_iy-origin> Z[#<_value>-#<_z-probe>+#<_iz-origin>]
 
@@ -35,10 +35,10 @@
       ; line on left hand side
       G1 X-#<delta-x> F500
       G1 Z#<current-z>
-      G1 Y#<_bed-length> Z#<current-z>
+      G1 Y[#<_bed-length>-#<_scratch-size>] Z#<current-z>
       ; line on right hand side
       G1 X#<delta-x>
-      G1 Y-#<_scratch-size> Z #<current-z>
+      G1 Y-#<_scratch-size> Z#<current-z>
       #<delta-x> = [#<delta-x> - .32]
    o100 endwhile
 

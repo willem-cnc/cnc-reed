@@ -24,34 +24,29 @@ Machine parameters
       used by:  carrier-inside, gouging, modelling
       
    #<_px-origin>     center profileroll
-      used by:  profile-screws, profiling-sb, profiling-db
+      used by:  profile-screws, profiling
    #<_py-origin>     start profileroll
-      used by:  profile-screws, profiling-sb, profiling-db
+      used by:  profile-screws, profiling
    #<_pz-origin>     top profileroll
-      used by:  profile-screws, profiling-sb, profiling-db
+      used by:  profile-screws, profiling
 
    #<_z-probe>      tool z for iz-origin & pz-origin          
       used by:  carrier-inside, gouging, modelling
-                profile-screws, profiling-sb, profiling-db
+                profile-screws, profiling
 
    #<_pipe-radius>   outside radius reed pipe
       used by:  carrier-inside
    #<_b-radius>      radius profileroll
-      used by:  gouging, profiling-sb, profiling-db
+      used by:  gouging, profiling
    #<_bed-length>    length of gouging bed
       used by:  carrier-inside
    #<_scratch-size>  space for gouging clips
       used by:  carrier-inside
-   #<_gouge-length>  length between clamps
-      used by:  gouging
-   #<_reed-length>   length of the final reed
-      used by:  modelling, profile-screws
    #<_i-sink-z>      depth in gouging carrier
       used by:  carrier-inside, gouging
-   #<_i-delta-z>     difference z front/back
-      used by:  carrier-inside, gouging
-   #<_i-delta-x>     difference x front/back
-      used by: gouging
+;
+; tool definitions (corresponding with linuxcnc tools)
+;
 
 Reed parameters
 
@@ -59,58 +54,67 @@ Reed parameters
    the reed parameters. The file is constructed as subroutine and is
    called by the programs. After the call these parameters are defined.
    You can make a link too a named file with ln -sf definition.ngc 
-   reed.ngc. (ln -sf stees.ngc reed.ngc).
+   reed.ngc. (ln -sf stees.ngc reed.ngc). As an example willem.ngc shows
+   the parameters I use at this moment.
 
-   #<_i-radius>      gouging radius = radius profileroll
-      used by:  gouging, profiling-sb, profiling-db
-   #<_i-thickness>   thickness in the center for gouging
-      used by:  gouging
-   #<_gouge-steps>   number of steps for gouging
-      used by:  gouging
-   #<_big-gouge>     width for blade gouge block 
-      used by:  gouging
-   #<_small-gouge>   width for shaft gouge block (if eq big-gouge => gouging full length)
-      used by:  gouging
-   #<_blade-block>   start y for blade block
-      used by:  gouging
-   #<_b-start-angle> angle first profileline (frontview profileroll)
-      used by:  profiling-sb
-   #<_b-angle-step>  degrees next profileline 
-      used by:  profiling-sb
-   #<_point-store>   value for table with profile calculation points
-      used by:  profiling-db
+; GOUGING PARAMETERS (all parameters used by gouging)
 
-   The next table is a list of elements for a combination of model and profile elements. 
+   #<_gouging-tool>
+   #<_reed-length> length of the final reed 
+   #<_gouge-length> reed-length + 2 * saw cut 
+   #<_i-radius>      = #<_b-radius> ; inside radius = blade roll
+   ; parameters phase 0 (pre-gouging 1)
+      #<_g0-thickness> middle of the reed
+      #<_g0-width> width of the reed (<0 skips phase 0)
+      #<_g0-step-size>  delta x between lines
+   ; parameters phase 1 (pre-gouging 2)
+      #<_g1-thickness> middle of the reed
+      #<_g1-width> width of the reed (<0 skips phase 1)
+      #<_g1-step-size> delta x between lines
+   ; parameters phase 2 (final)
+      #<_g2-thickness>  middle of the reed
+      #<_g2-width> width blade gouge block
+      #<_g2-step-size> delta x between lines
+      #<_small-gouge> width shaft gouge block
+      #<_blade-block> start y for blade block
 
-   #<_first-m>       value of first model element
-      used by:  modelling
-   #<_last-m>        value of last model element
-      used by:  modelling
-   #<_first-p>       value of fist profile element (>= first-m)
-      used by:  profiling-sb, profiling-db
-   #<_last-p>        value of last profile element (<= last-m)
-      used by:  profiling-sb, profiling-db
+; MODEL PARAMETERS (all parameters use by modelling)
+   #<_modelling-tool>
+   #<_first-m> start of model table
+   #<_last-m> last entry of model table
+   #<_m-x> element half model width
+   #<_m-y> element point from bottom
+   #<_m-s> elemnent size
 
-   Each element contains these parameters - () is element index
-   #<_m-y> (0)       y value of the element
-      used by:  modelling, profiling-sb, profiling-db
-   #<_m-x> (1)       half width of the model for this y
-      used by:  modelling, profiling-db
-   #<_p-z> (2)       thickness for this y
-      used by:  profing-sb
-   #<_p-ra> (3)      rail thickness for this y 
-      used by:  profiling-db
-   #<_p-ch> (4)      channel thickness for this y
-      used by:  profiling-db
-   #<_p-ce> (5)      center thickness for this y
-      used by:  profiling-db
-   #<_p-cal> (6)     number of calculationpoints center-channel and channel-rail
-      used by:  profiling-db
-   #<_p-steps> (7)   number of y increments too m-y of next element
-      used by:  profiling-db
-   #<_m-s> (10)      element size (rounded on 10 for readability)
-      used by:  modelling, profile-screws, profiling-sb, profiling-db
+; PROFILE PARAMETERS (all parameters used by profiling)
+
+   #<_profiling-tool> 
+   ; phase 1
+      #<_p1-enable>  0 = disable 1 = enable
+      #<_p1-start-angle> start angle for single barrel profiling
+      #<_p1-angle-step> angle step for single barrel profiling
+      #<_p1-first> start of profile table
+      #<_p1-last> last entry profile table
+      #<_p1-y> element measure point from bottom
+      #<_p1-z> element z
+      #<_p1-size> element size
+
+   ; phase 2 
+      #<_p2-enable> 0 = disable 1 = enable
+      #<_p2-first> start of profile table
+      #<_p2-last> last entry profile table
+      #<_p2-y> element measure point from bottom
+      #<_p2-x> element half model width
+      #<_p2-ra> element rails thickness value
+      #<_p2-ch> element channel thickness value
+      #<_p2-ce> element center thickness value
+      #<_p2-cal> element number of calculated points
+      #<_p2-steps> element number of profile steps
+      #<_p2-size> element size
+
+      #<_point-store>  table to store calculated points
+
 
    center is the middle of the reed
    channel is middle between center and rail
-   rail is the x value of the element
+   rail is half width of the reed

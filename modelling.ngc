@@ -3,7 +3,7 @@
 ;
    o<version> call                        ; display set version
    o<machine> call                        ; get machine definitions
-   o<model> call                          ; model parameters
+   o<reed> call                           ; reed parameters
 
    G17      ; xy plane
    G54      ; coord system 1
@@ -28,10 +28,10 @@
    #<safe-z> = 10
    #<feed-rate> = 500
 
-   G53 G0 Z0                     ; safe hight
+   G53 G0 Z0               ; safe hight
    M5                      ; stop spindle
 
-   #<_req-tool> = 11       ; finger type r = 1.25 mm
+   #<_req-tool> = #<_modelling-tool>
    o<change-tool> call     ; change tool and messure
    G10 L2 P1 X#<_ix-origin> Y#<_iy-origin> Z[#<_value>-#<_z-probe>+#<_iz-origin>+#<model-margin>]
 
@@ -39,22 +39,22 @@
 
    S1000 M3                ; start spindle clockwise
 
-   #<_delta-x> = [3 + [#5410/2]]
-   o220 while [[#<_delta-x> - [#5410/2]] GE -0.01]
+   #<delta-x> = [3 + [#5410/2]]
+   o220 while [[#<delta-x> - [#5410/2]] GE -0.01]
       #<element-m> = #<_first-m>
 
       G0 X-15 Y#[#<element-m> + #<_m-y>]
       G0 Z0
    
-      G1 X[-#[#<element-m> + #<_m-x>]-#<_delta-x>]
+      G1 X[-#[#<element-m> + #<_m-x>]-#<delta-x>]
       o100 while [#<element-m> LE #<_last-m>]
-         G1 X[-#[#<element-m> + #<_m-x>]-#<_delta-x>] Y#[#<element-m> + #<_m-y>]
+         G1 X[-#[#<element-m> + #<_m-x>]-#<delta-x>] Y#[#<element-m> + #<_m-y>]
          #<element-m> = [#<element-m> + #<_m-s>]
       o100 endwhile
    
       #<element-m> = #<_last-m>
       o110 while [#<element-m> GE #<_first-m>]
-         G1 X[-#[#<element-m> + #<_m-x>]-#<_delta-x>] Y[#<_reed-length> - #[#<element-m> + #<_m-y>]]
+         G1 X[-#[#<element-m> + #<_m-x>]-#<delta-x>] Y[#<_reed-length> - #[#<element-m> + #<_m-y>]]
          #<element-m> = [#<element-m> - #<_m-s>]
       o110 endwhile
    
@@ -62,20 +62,20 @@
       G0 Z#<safe-z>
       G0 X15 Y[#<_reed-length> - #[#<element-m> + #<_m-y>]]
       G0 Z0
-      G1 X[#[#<element-m> + #<_m-x>]+#<_delta-x>]
+      G1 X[#[#<element-m> + #<_m-x>]+#<delta-x>]
       o120 while [#<element-m> LE #<_last-m>]
-         G1 X[#[#<element-m> + #<_m-x>]+#<_delta-x>] Y[#<_reed-length> - #[#<element-m> + #<_m-y>]]
+         G1 X[#[#<element-m> + #<_m-x>]+#<delta-x>] Y[#<_reed-length> - #[#<element-m> + #<_m-y>]]
          #<element-m> = [#<element-m> + #<_m-s>]
       o120 endwhile
    
       #<element-m> = #<_last-m>
       o130 while [#<element-m> GE #<_first-m>]
-         G1 X[#[#<element-m> + #<_m-x>]+#<_delta-x>] Y#[#<element-m> + #<_m-y>]
+         G1 X[#[#<element-m> + #<_m-x>]+#<delta-x>] Y#[#<element-m> + #<_m-y>]
          #<element-m> = [#<element-m> - #<_m-s>]
       o130 endwhile
    
       G0 Z#<safe-z>
-      #<_delta-x> = [#<_delta-x> - 0.75]
+      #<delta-x> = [#<delta-x> - 0.75]
    o220 endwhile
 
    M5                         ; stop spindle

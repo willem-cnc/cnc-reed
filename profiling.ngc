@@ -1,0 +1,241 @@
+;
+; profiling program
+;
+   o<version> call               ; display set version
+   o<machine> call               ; get x,y & z origin definitions
+   o<reed> call                  ; get reed parameters
+
+   G17                           ; xy plane
+   G54                           ; coord system 1
+   G40                           ; compensation off
+   G49                           ; tool length comp off
+   G80                           ; canning cycle off
+   G90                           ; absolute mode
+   G21                           ; metric
+   G61                           ; exact mode
+;
+; phase 1
+; same profile over width of the blade (single barrel)
+;
+   ; profile definitions from called programm (reed)
+   ;#<_p1-enable>                ; 0 = disable 1 = enable
+   ;#<_p1-start-angle>           ; start angle for single barrel profiling
+   ;#<_p1-angle-step>            ; angle step for single barrel profiling
+   ;#<_p1-firt>                  ; start of profile table
+   ;#<_p1-last>                  ; last entry profile table
+   ;#<_p1-y>                     ; element measure point from bottom
+   ;#<_p1-z>                     ; element z
+   ;#<_p1-size>                  ; elemnet size
+
+   ;
+   ; parameters
+   ;
+   #<z-margin>       = 0         ; extra margin for smoothing/testing
+   #<safe-z>         = 3
+
+   G53 G0 Z0                     ; safe hight
+   M5                            ; stop spindle
+   
+   #<_req-tool> = #<_profiling-tool>
+   o<change-tool> call     ; change tool and messure
+   G10 L2 P1 X#<_px-origin> Y#<_py-origin> Z[#<_value>-#<_z-probe>+#<_pz-origin>+#<z-margin>]
+
+   S1000 M3                      ; start spindle clock wise
+
+   o50 if [#<_p1-enable> GT 0] 
+      G0 X-#[#<_p2-last> + #<_p2-x>] Y#[#<_p1-first> + #<_p1-y>] ; initial move (width from phase 2)
+      G0 Z#<safe-z>
+      ; blade is made with right hand circuit
+      ; outside to middle of the reed
+   
+      #<horizontal-feed> = 625
+      #<vertical-feed>   = 250
+
+      #<angle> = #<_p1-start-angle>
+
+      o100 while [#<angle> GE -.1 ]
+         #<element> = #<_p1-first>
+         ;
+         ; make line on left hand side
+         ;
+         o120 while [#<element> LE #<_p1-last>]
+            #<new-r> = [#<_i-radius> + #[#<element> + #<_p1-z>]]
+            #<new-x> = [#<new-r> * sin[#<angle>]]
+            #<new-y> = [#[#<element> + #<_p1-y>]]
+            #<new-z> = [-#<_i-radius> + [#<new-r> * cos[#<angle>]]]
+            o125 if [#<element> EQ #<_p1-first>]
+               G1 X-#<new-x> Y#<new-y> F#<horizontal-feed>
+               G1 Z#<new-z> F#<vertical-feed>
+            o125 else
+               G1 X-#<new-x> Y#<new-y> Z#<new-z> F#<horizontal-feed>
+            o125 endif
+            #<element> = [#<element> + #<_p1-size>]
+         o120 endwhile
+         G0 Z#<safe-z>
+         ;
+         ; make line on right hand side
+         ;
+         o130 if [#<angle> GT 0.1] 
+            #<element> = #<_p1-last>
+            o135 while [#<element> GE #<_p1-first>]
+               #<new-r> = [#<_i-radius> + #[#<element> + #<_p1-z>]]
+               #<new-x> = [#<new-r> * sin[#<angle>]]
+               #<new-y> = [#[#<element> + #<_p1-y>]]
+               #<new-z> = [-#<_i-radius> + [#<new-r> * cos[#<angle>]]]
+               o137 if [#<element> EQ #<_p1-last>]
+                  G1 X#<new-x> Y#<new-y> F#<horizontal-feed>
+                  G1 Z#<new-z> F#<vertical-feed>
+               o137 else
+                  G1 X#<new-x> Y#<new-y> Z#<new-z> F#<horizontal-feed>
+               o137 endif
+               #<element> = [#<element> - #<_p1-size>]
+            o135 endwhile
+            G0 Z#<safe-z>
+         o130 endif
+         ;
+         ; next angle
+         ;
+         #<angle> = [#<angle> - #<_p1-angle-step>]
+      o100 endwhile
+   o50 endif
+   G0 Z#<safe-z>
+;
+; phase 2
+; profile like double barrel
+;
+   ; profile definitions from called programm (reed)
+   ;#<_p2-enable>                ; 0 = disable 1 = enable
+   ;#<_p2-first>                  ; start of profile table
+   ;#<_p2-last>                  ; last entry profile table
+   ;#<_p2-y>                     ; element measure point from bottom
+   ;#<_p2-x>                     ; element half model width
+   ;#<_p2-ra>                    ; element rails thickness value
+   ;#<_p2-ch>                    ; element channel thickness value
+   ;#<_p2-ce>                    ; element center thickness value
+   ;#<_p2-cal>                   ; element number of calculated points
+   ;#<_p2-steps>                 ; element number of profile steps
+   ;#<_p2-size>                  ; elemnet size
+   ;#<_point-store>              ; table to store calculated points
+;
+; parameters for calculated points between 
+; rail - channel & center - channel
+;
+   #<cp-x>  = 0                  ; element x value
+   #<cp-z>  = 1                  ; element z value
+   #<cp-s>  = 2                  ; element size
+
+   o150 if [#<_p2-enable> GT 0]
+      F350
+      G0 X#[#<_p2-first> + #<_p2-x>] Y#[#<_p2-first> + #<_p2-y>] ; initial move
+
+      #<p-element> = #<_p2-first>
+      o200 while [#<p-element> LT #<_p2-last>]
+         #<p-step> = 0
+         ;
+         ; profile delta's and calculation points for this area
+         ;
+         #<profile-steps> = [#[#<p-element> + #<_p2-steps>]]
+         #<m-delta-x>  = [[#[#<p-element>+#<_p2-size>+#<_p2-x>]-#[#<p-element>+#<_p2-x>]] / [#<profile-steps>+1]]
+         #<m-delta-y>  = [[#[#<p-element>+#<_p2-size>+#<_p2-y>]-#[#<p-element>+#<_p2-y>]] / [#<profile-steps>+1]]
+         #<p-delta-ra> = [[#[#<p-element>+#<_p2-size>+#<_p2-ra>]-#[#<p-element>+#<_p2-ra>]] / [#<profile-steps>+1]]
+         #<p-delta-ch> = [[#[#<p-element>+#<_p2-size>+#<_p2-ch>]-#[#<p-element>+#<_p2-ch>]] / [#<profile-steps>+1]]
+         #<p-delta-ce> = [[#[#<p-element>+#<_p2-size>+#<_p2-ce>]-#[#<p-element>+#<_p2-ce>]] / [#<profile-steps>+1]]
+         #<p-cal>      = [#[#<p-element> + #<_p2-cal>]]
+         o300 while [#<p-step> LE #[#<p-element> +#<_p2-steps>]]
+            ;
+            ; values for this profile step
+            ; x,y, rail, channel, center and calculated points
+            ;
+            #<cur-x> = [#[#<p-element>+#<_p2-x>] + [#<m-delta-x> * #<p-step>]]
+            #<cur-y> = [#[#<p-element>+#<_p2-y>] + [#<m-delta-y> * #<p-step>]]
+            #<ra-thickness> = [#[#<p-element>+#<_p2-ra>]+#<p-delta-ra>*#<p-step>]
+            #<ch-thickness> = [#[#<p-element>+#<_p2-ch>]+#<p-delta-ch>*#<p-step>]
+            #<ce-thickness> = [#[#<p-element>+#<_p2-ce>]+#<p-delta-ce>*#<p-step>]
+            #<cx-step> = [-#<cur-x> / [[#<p-cal> + 1]*2]]
+            ;
+            ; x deviation is calculated (valid for: model-x < i-radius)
+            ; sin angle = point-x/i-radius = new-x/(i-radius + point-thickness)
+            ; new-x = point-x/i-radius * (i-radius + point-thickness)
+            ; z deviation is calculated with pythagoras
+            ; new-z = sqrt((i-radius+point-thickness)**2 - new-x**2) - i-radius
+            ;
+            ; calculate rail-channel points rail included
+            ;
+            #<cz-step> = [[#<ch-thickness> - #<ra-thickness>] / [#<p-cal> + 1]]
+            #<point-table> = #<_point-store>
+            #<point-x> = #<cur-x>
+            #<point-thickness> = #<ra-thickness>
+            #<point-num> = 0
+            o500 while [#<point-num> LE #<p-cal>]
+               #<new-x> = [#<point-x> * [1 + [#<point-thickness>/#<_i-radius>]]]
+               #<new-z> = [-#<_i-radius>+sqrt[[#<_i-radius>+#<point-thickness>]**2-#<new-x>**2]]
+               #[#<point-table> + #<cp-x>] = #<new-x>
+               #[#<point-table> + #<cp-z>] = #<new-z>
+               #<point-table> = [#<point-table> + #<cp-s> ]
+               #<point-x> = [#<point-x> + #<cx-step>]
+               #<point-thickness> = [#<point-thickness> + #<cz-step>]
+               #<point-num> = [#<point-num> + 1]
+            o500 endwhile
+            ;
+            ; calculate channel-center points channel included
+            ;
+            #<cz-step> = [[#<ce-thickness> - #<ch-thickness>] / [#<p-cal> + 1]]
+            #<point-thickness> = #<ch-thickness>
+            #<point-num> = 0
+            o600 while [#<point-num> LE #<p-cal>]
+               #<new-x> = [#<point-x> * [1 + [#<point-thickness>/#<_i-radius>]]]
+               #<new-z> = [-#<_i-radius>+sqrt[[#<_i-radius>+#<point-thickness>]**2-#<new-x>**2]]
+               #[#<point-table> + #<cp-x>] = #<new-x>
+               #[#<point-table> + #<cp-z>] = #<new-z>
+               #<point-table> = [#<point-table> + #<cp-s> ]
+               #<point-x> = [#<point-x> + #<cx-step>]
+               #<point-thickness> = [#<point-thickness> + #<cz-step>]
+               #<point-num> = [#<point-num> + 1]
+            o600 endwhile
+
+            o310 if [#5420 GE 0]                ; current x pos
+               ;
+               ; right to left
+               ;
+               #<point> = #<_point-store>
+               o400 while [#<point> LT #<point-table>]
+                  G1 X#[#<point> + #<cp-x>] Y#<cur-y> Z#[#<point> + #<cp-z>]
+                  #<point> = [#<point> + #<cp-s>]
+               o400 endwhile
+               G1 X0 Z#<ce-thickness>
+               #<point> = [#<point-table> - #<cp-s>]
+               o410 while [#<point> GE #<_point-store>]
+                  G1 X-#[#<point> + #<cp-x>] Y#<cur-y> Z#[#<point> + #<cp-z>]
+                  #<point> = [#<point> - #<cp-s>]
+               o410 endwhile
+            o310 else
+               ;
+               ; left to right
+               ;
+               #<point> = #<_point-store>
+               o420 while [#<point> LT #<point-table>]
+                  G1 X-#[#<point> + #<cp-x>] Y#<cur-y> Z#[#<point> + #<cp-z>]
+                  #<point> = [#<point> + #<cp-s>]
+               o420 endwhile
+               G1 X0 Z#<ce-thickness>
+               #<point> = [#<point-table> - #<cp-s>]
+               o430 while [#<point> GE #<_point-store>]
+                  G1 X#[#<point> + #<cp-x>] Y#<cur-y> Z#[#<point> + #<cp-z>]
+                  #<point> = [#<point> - #<cp-s>]
+               o430 endwhile
+            o310 endif
+            #<p-step> = [#<p-step> + 1]         ; next profile line
+         o300 endwhile
+         #<p-element> = [#<p-element> + #<_p2-size>]   ; next profile element
+      o200 endwhile
+   o150 endif
+
+   M5                            ; stop spindle
+   G53 G0 Z0                     ; safe height
+
+   G54                           ; coord system 1
+   G90                           ; absolute  distance
+   G80                           ; canning cycle off
+   G40                           ; compensation off
+   G64                           ; cancel exact mode
+   M2                            ; end of programm

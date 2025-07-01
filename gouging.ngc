@@ -18,39 +18,79 @@
    ;
    ; parameters
    ;
-   #<feed-rate> = 1000
-   #<i-center-z> = [#<_i-radius> + #<_i-thickness>]
+   #<feed-rate> = 1200        ; max speed
    #<safe-z> = 5
 
    M5                         ; stop spindle
 
-   #<_req-tool> = 1        ; ball nose r = .5 mm
+   #<_req-tool> = #<_gouging-tool>
    o<change-tool> call     ; change tool and messure
    G10 L2 P1 X#<_ix-origin> Y#<_iy-origin> Z[#<_value>-#<_z-probe>+#<_iz-origin>-#<_i-sink-z>]
 
    F#<feed-rate>
 
-   #<step-size> = [#<_big-gouge> / #<_gouge-steps>]
-
    S1000 M3                ; start spindle clock wise
    ;
-   ; right hand circuit blade part
+   ; pre-gouging phase 1
    ;
-   #<delta-x> = #<_big-gouge>
+   #<i-center-z> = [#<_i-radius> + #<_g0-thickness>]
+   #<delta-x> = #<_g0-width>
+   G0 X-#<delta-x> Y[#5410/2]
+   G0 Z#<safe-z>
+   o2 while [#<delta-x> GE 0]
+      #<current-z> = [#<i-center-z> - sqrt[#<_i-radius>**2 - #<delta-x>**2]]
+      ; line on left hand side
+      G1 X-#<delta-x>
+      G1 Z#<current-z>
+      G1 Y[#<_gouge-length> - [#5410/2]]
+      o5 if [#<delta-x> GE 0.01]
+         ; line on right hand side
+         G1 X#<delta-x> 
+         G1 Y[#5410/2]
+      o5 endif
+      #<delta-x> = [#<delta-x> - #<_g0-step-size>]
+   o2 endwhile
+   G0 Z#<safe-z>
+   ;
+   ; pre-gouging phase 2
+   ;
+   #<i-center-z> = [#<_i-radius> + #<_g1-thickness>]
+   #<delta-x> = #<_g1-width>
+   G0 X-#<delta-x> Y[#5410/2]
+   G0 Z#<safe-z>
+   o20 while [#<delta-x> GE 0]
+      #<current-z> = [#<i-center-z> - sqrt[#<_i-radius>**2 - #<delta-x>**2]]
+      ; line on left hand side
+      G1 X-#<delta-x>
+      G1 Z#<current-z>
+      G1 Y[#<_gouge-length> - [#5410/2]]
+      o25 if [#<delta-x> GE 0.01]
+         ; line on right hand side
+         G1 X#<delta-x> 
+         G1 Y[#5410/2]
+      o25 endif
+      #<delta-x> = [#<delta-x> - #<_g1-step-size>]
+   o20 endwhile
+   G0 Z#<safe-z>
+   ;
+   ; gouging right hand circuit blade part
+   ;
+   #<i-center-z> = [#<_i-radius> + #<_g2-thickness>]
+   #<delta-x> = #<_g2-width>
    G0 X-#<delta-x> Y[#<_blade-block> + [#5410/2]]
    o100 while [#<delta-x> GT #<_small-gouge>]
       #<current-z> = [#<i-center-z> - sqrt[#<_i-radius>**2 - #<delta-x>**2]]
       ; line on left hand side
       G1 X-#<delta-x>
       G1 Z#<current-z>
-      G1 X-#<delta-x> Y[#<_gouge-length> - #<_blade-block> - [#5410/2]] Z[#<current-z> + #<_i-delta-z>]
+      G1 Y[#<_gouge-length> - #<_blade-block> - [#5410/2]]
       ; line on right hand side
       G1 X#<delta-x>
-      G1 Y[#<_blade-block> + [#5410/2]] Z#<current-z>
-      #<delta-x> = [#<delta-x> - #<step-size>]
+      G1 Y[#<_blade-block> + [#5410/2]]
+      #<delta-x> = [#<delta-x> - #<_g2-step-size>]
    o100 endwhile
    ;
-   ; right hand circuit tube part
+   ; gouging right hand circuit tube part
    ;
    G0 Z#<safe-z>
    G0 X-#<delta-x> Y[#5410/2]
@@ -59,11 +99,13 @@
       ; line on left hand side
       G1 X-#<delta-x>
       G1 Z#<current-z>
-      G1 X[-#<delta-x>+#<_i-delta-x>] Y[#<_gouge-length> - [#5410/2]] Z[#<current-z> + #<_i-delta-z>]
-      ; line on right hand side
-      G1 X[#<delta-x> + #<_i-delta-x>]
-      G1 X#<delta-x> Y[#5410/2] Z#<current-z>
-      #<delta-x> = [#<delta-x> - #<step-size>]
+      G1 Y[#<_gouge-length> - [#5410/2]]
+      o250 if [#<delta-x> GE 0.01]
+         ; line on right hand side
+         G1 X#<delta-x> 
+         G1 Y[#5410/2]
+      o250 endif
+      #<delta-x> = [#<delta-x> - #<_g2-step-size>]
    o200 endwhile
 
    M5                         ; stop spindle

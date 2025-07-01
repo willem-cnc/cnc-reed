@@ -1,0 +1,88 @@
+; definition of bassoon reed dimensions for
+; gouging and profiling
+; model (Chiarugi Miller #1A)
+; profile inspired by Sidney Rosenberg
+; see NorthAmericanBssnReedsDR25_3.pdf #45
+
+o<reed> sub
+
+   (DEBUG, willem version: xx)
+
+; GOUGING PARAMETERS
+
+   #<_gouging-tool>  = #<_ball-nose-0.5>
+   #<_reed-length>   = 120          ; length of the final reed 
+   #<_gouge-length>  = 122          ; reed-length + 2 * saw cut 
+   #<_i-radius>      = #<_b-radius> ; inside radius = blade roll
+   ; parameters phase 0 (pre-gouging 1)
+      #<_g0-thickness>  = 2.30         ; middle of the reed
+      #<_g0-width>      = 7.70
+      #<_g0-step-size>  = [#<_g0-width> / 10 ]
+   ; parameters phase 1 (pre-gouging 2)
+      #<_g1-thickness>  = 1.80         ; middle of the reed
+      #<_g1-width>      = 7.70
+      #<_g1-step-size>  = [#<_g1-width> / 10 ]
+   ; parameters phase 2 (final)
+      #<_g2-thickness>  = 1.30         ; middle of the reed
+      #<_g2-width>      = 7.70         ; width blade gouge block
+      #<_g2-step-size>  = [#<_g2-width> / 25]
+      #<_small-gouge>   = 4.77         ; width shaft gouge block
+      #<_blade-block>   = 28           ; start y for blade block
+
+; MODEL PARAMETERS
+
+; PROFILE PARAMETERS
+
+   #<_profiling-tool> = #<_ball-nose-0.5>
+   ; phase 1
+      #<_p1-enable> = 1                ; 0 = disable 1 = enable
+      #<_p1-start-angle> = 36          ; start angle for single barrel profiling
+      #<_p1-angle-step>  = [#<_p1-start-angle> / 15]  ; angle step for single barrel profiling
+      #<_p1-first>  = 200              ; start of profile table
+      #<_p1-last>   = 210              ; last entry profile table
+      #<_p1-y>      = 0                ; element measure point from bottom
+      #<_p1-z>      = 1                ; element z
+      #<_p1-size>   = 10               ; element size
+   ; phase 1 table
+      #200 = 27.5 #201 = 0.890
+      #210 = 60.0 #211 = 0.300
+
+   ; phase 2 
+      #<_p2-enable> = 1                ; 0 = disable 1 = enable
+      #<_p2-first>  = 240              ; start of profile table
+      #<_p2-last>   = 400              ; last entry profile table
+      #<_p2-y>      = 0                ; element measure point from bottom
+      #<_p2-x>      = 1                ; element half model width
+      #<_p2-ra>     = 2                ; element rails thickness value
+      #<_p2-ch>     = 3                ; element channel thickness value
+      #<_p2-ce>     = 4                ; element center thickness value
+      #<_p2-cal>    = 5                ; element number of calculated points
+      #<_p2-steps>  = 6                ; element number of profile steps
+      #<_p2-size>   = 10               ; element size
+
+      #<_point-store>      = 500       ; table to store calculated points
+
+   ; phase 2 table
+   ; p-cal (6) is calculated from (m-x(1)/2)/.25 (rounded up)
+   ; steps on the curve are always <= .25
+      #240 = 27.5 #241 = 4.557 #242 = .820 #243 = .820 #244 = .820 #245 = 10 #246 = 6
+      #250 = 29.5 #251 = 4.687 #252 = .780 #253 = .780 #254 = .760 #255 = 10 #256 = 6
+      #260 = 31.5 #261 = 4.868 #262 = .750 #263 = .750 #264 = .740 #265 = 10 #266 = 6
+      #270 = 33.5 #271 = 5.053 #272 = .720 #273 = .730 #274 = .720 #275 = 11 #276 = 6
+      #280 = 35.5 #281 = 5.239 #282 = .660 #283 = .700 #284 = .700 #285 = 11 #286 = 6
+      #290 = 37.5 #291 = 5.443 #292 = .590 #293 = .650 #294 = .690 #295 = 11 #296 = 6
+      #300 = 39.5 #301 = 5.655 #302 = .560 #303 = .630 #304 = .670 #305 = 12 #306 = 6
+      #310 = 41.5 #311 = 5.889 #312 = .530 #313 = .600 #314 = .630 #315 = 12 #316 = 6
+      #320 = 43.5 #321 = 6.129 #322 = .460 #323 = .570 #324 = .580 #325 = 13 #326 = 6
+      #330 = 45.5 #331 = 6.372 #332 = .400 #333 = .520 #334 = .540 #335 = 13 #336 = 6
+      #340 = 47.5 #341 = 6.611 #342 = .290 #343 = .470 #344 = .490 #345 = 14 #346 = 6
+      #350 = 49.5 #351 = 6.850 #352 = .230 #353 = .380 #354 = .410 #355 = 14 #356 = 3
+      #360 = 50.5 #361 = 6.970 #362 = .170 #363 = .330 #364 = .380 #365 = 15 #366 = 3
+      #370 = 51.5 #371 = 7.090 #372 = .170 #373 = .230 #374 = .300 #375 = 15 #376 = 3
+      #380 = 52.5 #381 = 7.214 #382 = .170 #383 = .230 #384 = .270 #385 = 16 #386 = 3
+      #390 = 53.5 #391 = 7.335 #392 = .170 #393 = .230 #394 = .270 #395 = 16 #396 = 20
+      #400 = 60   #401 = 7.700 #402 = .170 #403 = .230 #404 = .270 #405 = 16 #406 = 3
+
+o<reed> endsub
+
+   M2    ; programm end

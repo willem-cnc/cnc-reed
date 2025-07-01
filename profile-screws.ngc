@@ -3,7 +3,7 @@
 ;
    o<version> call                     ; display set version
    o<machine> call                     ; get x,y & z origin definitions
-   o<model> call                       ; get model parameters
+   o<reed> call                        ; get reed parameters
 
    G17      ; xy plane
    G54      ; coord system 1
@@ -22,7 +22,7 @@
 
    M5                      ; stop spindle
 
-   #<_req-tool> = 1        ; ball nose r = .5 mm
+   #<_req-tool> = #<_ball-nose-0.5>
    o<change-tool> call     ; change tool and messure
    G10 L2 P1 X#<_px-origin> Y#<_py-origin> Z[#<_value>-#<_z-probe>+#<_pz-origin>]
 
@@ -54,8 +54,6 @@
 
    G53 G0 Z0
    M5                      ; stop spindle
-
-   G53 G0 X0 Y0
 
    G54      ; coord system 1
    G90      ; absolute  distance

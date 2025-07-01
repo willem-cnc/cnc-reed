@@ -12,19 +12,32 @@ time I did not have a cnc-machine or knowledge how to programm it.
 I'm a retired programmer and all my home systems are build by myself
 with debian linux, so linuxcnc and g-code fits in this picture.
 
+I build a cnc machine with aluminum parts and did a lot of tests.
+The cnc machine is then updated so the y-block is more robust and the
+carriers are no longer part of the machine construction and mounted on
+the y-block. Also the portal is fixed in x and y direction with wooden
+strips.
+
+After a period of manual pre-gouging the gouging program is adjusted
+with 2 phases of pre-gouging.
+
+The single and double barrel profiling programs are combined, the
+separate processes are selectable in the reed parameter file.
+
+The reed parameter file is extended for these adjustments.
+
 The final process:
 1. split the reed pipe in 4 pieces
-2. cut it to desired length
+2. cut it to desired length (140 mm)
 3. cnc-milling for gouging
-4. cnc-milling for modelling
-5. cnc-milling for profiling
-6. rest is standard
+4. cut it 120 mm
+5. manual modelling
+6. sand the inside
+7. cnc-milling for profiling
+8. rest is standard
 
 My hardware consists off:
-- pipe splitter
-   4 knives
-   4 quarter round 7 mm
-   1 multiplex plate
+- knive for splitting pipes
 - computer
    - Intel D945GCLF2 with ATOM 330 1.6 GHz (1 core disabled)
    - RAM 2 GB
@@ -36,12 +49,12 @@ My hardware consists off:
    - wooden plate with bed for reed
 - profiling carrier
    - 20x20 aluminium profile
-   - aluminium pipe D=26
+   - aluminium pipe D=25
 - touch plate
    - iron key plate
 
 The software consists off:
-- linuxcnc 2.8.2
+- linuxcnc 2.9.4
    RTAI kernel (amd64)
 - machine.ngc
    properties of the machine
@@ -52,20 +65,15 @@ The software consists off:
 - reed.ngc or link to a named-reed file
    parameters of a reed
    gouging and profiling
-   herzberg.ngc as example
-- model.ngc or link to a named-model file
-   parameters for modelling
-   example for model in model.ngc
+   willem.ngc as example
 - gouging.ngc
    gouging using reed parameters
 - modelling.ngc
    modelling using reed parameters
 - profile-screws.ngc
    screw setting for reed positioning
-- profiling-db.ngc
-   profiling like a double barrel profiler
-- profiling-sb.ngc
-   profiling like a single barrel profiler
+- profiling.ngc
+   profiling using reed parameters
 - change-tool.ngc
    request tool mount and measure tool length
 - carrier-inside.ngc

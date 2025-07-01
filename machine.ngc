@@ -3,67 +3,49 @@
 o<machine> sub
 
 ;
-; base definitions
-;
-   #<x-inside>    =   36.580
-   #<y-inside>    =   -0.500
-   #<z-inside>    =  -44.790
-
-   #<x-profile>   =  137.850
-   #<y-profile>   =    3.330
-   #<z-profile>   =  -31.650
-
-   #<x-touch>     =  170
-   #<y-touch>     =  150
-   #<z-touch>     =  -58
-
-   #<probe-z>     =  -34.616
-;
-; measurements contact plate 23-01-22
-; x 152.778
-; y 147.453
-; z -34.616 (tool-probe)
-;
-; delta's after new homing
-;
-   #<dx>          =  0
-   #<dy>          =  0
-   #<dz>          =  0
-
+; base definitions for machine locations
 ;
 ; definitions for tool length touch plate
 ;
-   #<_x-touch>    =  [#<x-touch> + #<dx>]
-   #<_y-touch>    =  [#<y-touch> + #<dy>]    ; point on touch plate
-   #<_z-touch>    =  [#<z-touch> + #<dz>]    ; no tool injected 
+   #<_x-touch>    =  194.000
+   #<_y-touch>    =  170.000                ; point on touch plate
+   #<_z-touch>    =  -56.830                ; contact without tool
 ;
 ; definitions for inside (gouging & modelling)
 ;
-   #<_ix-origin>  =  [#<x-inside> + #<dx>]   ; middle of reed carrier
-   #<_iy-origin>  =  [#<y-inside> + #<dy>]   ; free from clamp
-   #<_iz-origin>  =  [#<z-inside> + #<dz>]   ; top of reed carrier
+   #<_ix-origin>  =   31.000                 ; middle of reed carrier
+   #<_iy-origin>  =   29.900                 ; free from clamp
+   #<_iz-origin>  =  -44.450                 ; top of reed carrier
 ;
 ; definitions for profiling
 ;
-   #<_px-origin>  =  [#<x-profile> + #<dx>]  ; middle of reed carrier
-   #<_py-origin>  =  [#<y-profile> + #<dy>]  ; start of reed
-   #<_pz-origin>  =  [#<z-profile> + #<dz>]  ; top of reed carrier
+   #<_px-origin>  =  194.000                 ; middle of reed carrier
+   #<_py-origin>  =   10.350                 ; start of reed
+   #<_pz-origin>  =  -29.650                 ; top of reed carrier
 ; 
 ; probe-z during measurement
 ;
-   #<_z-probe>    =  [#<probe-z> + #<dz>]    ; probe touch value
+   #<_z-probe>    =  -31.734                 ; probe touch value
 ;
 ;common definitions
 ;
-   #<_pipe-radius>   = 12.5                  ; outside radius of reed
-   #<_b-radius>      = 13                    ; radius of blade roll
+   #<_pipe-radius>   =  12.5                 ; outside radius of reed
+   #<_b-radius>      =  12.5                 ; radius of blade roll
    #<_bed-length>    = 140                   ; length for gouging bed
-   #<_scratch-size>  = 10                    ; space for gouging clips
-   #<_gouge-length>  = 128                   ; between clamps
-   #<_reed-length>   = 120                   ; length of the final reed 
-   #<_i-sink-z>      = 3.75                  ; reed sinks in carrier
-   #<_i-delta-z>     = 0.04                  ; difference depth front back
-   #<_i-delta-x>     = -0.02                 ; difference x front back
+   #<_scratch-size>  =   8                   ; space for gouging clips
+   #<_i-sink-z>      =   1.00                ; reed sinks in carrier
+;
+; tool definitions (corresponding with linuxcnc tools)
+;
+   #<_ball-nose-0.5>  =   1
+   #<_ball-nose-0.75> =   2
+   #<_ball-nose-1>    =   3
+   #<_ball-nose-1.25> =   4
+   #<_ball-nose-1.5>  =   5
+   #<_ball-nose-1.75> =   6
+   #<_ball-nose-2>    =   7
+   #<_finger-2.45>    =  11
+   #<_probe>          = 100
 
 o<machine> endsub
 
